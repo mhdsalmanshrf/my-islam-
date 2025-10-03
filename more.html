@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>More Features - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item active flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-islamic-500 rounded-lg flex items-center justify-center">
+                    <span class="text-white text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-islamic-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4 pt-6">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-clay-800 mb-2">More Features</h1>
+            <p class="text-clay-600">Explore additional Islamic tools</p>
+        </header>
+
+        <!-- Feature Grid -->
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <!-- Duas -->
+            <a href="duas.html" class="quick-action bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200 transition-all duration-200 hover:shadow-lg">
+                <div class="text-2xl mb-2">🤲</div>
+                <h3 class="font-semibold text-clay-800">Daily Duas</h3>
+                <p class="text-sm text-clay-600">Essential prayers</p>
+            </a>
+
+            <!-- Tasbeeh -->
+            <a href="tasbeeh.html" class="quick-action bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200 transition-all duration-200 hover:shadow-lg">
+                <div class="text-2xl mb-2">📿</div>
+                <h3 class="font-semibold text-clay-800">Tasbeeh</h3>
+                <p class="text-sm text-clay-600">Digital counter</p>
+            </a>
+
+            <!-- Islamic Calendar -->
+            <a href="calendar.html" class="quick-action bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200 transition-all duration-200 hover:shadow-lg">
+                <div class="text-2xl mb-2">📅</div>
+                <h3 class="font-semibold text-clay-800">Calendar</h3>
+                <p class="text-sm text-clay-600">Hijri dates</p>
+            </a>
+
+            <!-- Habits -->
+            <a href="habits.html" class="quick-action bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200 transition-all duration-200 hover:shadow-lg">
+                <div class="text-2xl mb-2">✅</div>
+                <h3 class="font-semibold text-clay-800">Habits</h3>
+                <p class="text-sm text-clay-600">Track progress</p>
+            </a>
+
+            <!-- Zakat Calculator -->
+            <a href="zakat.html" class="quick-action bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200 transition-all duration-200 hover:shadow-lg">
+                <div class="text-2xl mb-2">💰</div>
+                <h3 class="font-semibold text-clay-800">Zakat</h3>
+                <p class="text-sm text-clay-600">Calculator</p>
+            </a>
+
+            <!-- Settings -->
+            <a href="settings.html" class="quick-action bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200 transition-all duration-200 hover:shadow-lg">
+                <div class="text-2xl mb-2">⚙️</div>
+                <h3 class="font-semibold text-clay-800">Settings</h3>
+                <p class="text-sm text-clay-600">Preferences</p>
+            </a>
+        </div>
+
+        <!-- Recent Activity -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Recent Activity</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-islamic-100 rounded-full flex items-center justify-center">
+                                <span class="text-islamic-600">📖</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-clay-800">Quran Reading</p>
+                                <p class="text-sm text-clay-600">Al-Fatiha, Verse 3</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-clay-500">2 hours ago</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-islamic-100 rounded-full flex items-center justify-center">
+                                <span class="text-islamic-600">🕌</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-clay-800">Prayer Completed</p>
+                                <p class="text-sm text-clay-600">Dhuhr prayer</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-clay-500">5 hours ago</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-islamic-100 rounded-full flex items-center justify-center">
+                                <span class="text-islamic-600">📿</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-clay-800">Tasbeeh Count</p>
+                                <p class="text-sm text-clay-600">33 SubhanAllah</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-clay-500">1 day ago</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Your Progress</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-xl p-4 shadow-md border border-islamic-200">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-islamic-700" id="prayer-streak">7</div>
+                        <div class="text-sm text-islamic-600">Day Streak</div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-xl p-4 shadow-md border border-islamic-200">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-islamic-700" id="verses-read">142</div>
+                        <div class="text-sm text-islamic-600">Verses Read</div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-xl p-4 shadow-md border border-islamic-200">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-islamic-700" id="tasbeeh-count">1,247</div>
+                        <div class="text-sm text-islamic-600">Tasbeeh Count</div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-xl p-4 shadow-md border border-islamic-200">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-islamic-700" id="duas-learned">23</div>
+                        <div class="text-sm text-islamic-600">Duas Learned</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Islamic Calendar Events -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Upcoming Events</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-islamic-400 to-islamic-500 rounded-lg flex items-center justify-center">
+                                <span class="text-white font-bold">15</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-clay-800">Rabi' al-Awwal</p>
+                                <p class="text-sm text-clay-600">Birth of Prophet Muhammad ﷺ</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-clay-500">12 days</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-gradient-to-r from-islamic-400 to-islamic-500 rounded-lg flex items-center justify-center">
+                                <span class="text-white font-bold">1</span>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-clay-800">Ramadan</p>
+                                <p class="text-sm text-clay-600">Holy month of fasting</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-clay-500">45 days</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-2xl p-6 shadow-lg border border-islamic-200">
+                <h2 class="text-xl font-semibold text-islamic-800 mb-4">About MyIslam</h2>
+                <p class="text-islamic-700 text-sm mb-4">
+                    MyIslam is your comprehensive Islamic companion, designed to help you maintain your spiritual practices and connect with the Quran in your daily life.
+                </p>
+                <div class="flex space-x-4">
+                    <button class="clay-button flex-1 bg-islamic-500 text-white">
+                        Rate App
+                    </button>
+                    <button class="clay-button flex-1">
+                        Share App
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        // More Page Specific JavaScript
+        class MorePage {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.loadUserStats();
+                this.setupEventListeners();
+                this.animateStats();
+            }
+
+            loadUserStats() {
+                // Load user statistics from localStorage
+                const stats = {
+                    prayerStreak: localStorage.getItem('prayer-streak') || 7,
+                    versesRead: localStorage.getItem('verses-read') || 142,
+                    tasbeehCount: localStorage.getItem('tasbeeh-count') || 1247,
+                    duasLearned: localStorage.getItem('duas-learned') || 23
+                };
+
+                // Update display
+                document.getElementById('prayer-streak').textContent = stats.prayerStreak;
+                document.getElementById('verses-read').textContent = stats.versesRead;
+                document.getElementById('tasbeeh-count').textContent = stats.tasbeehCount.toLocaleString();
+                document.getElementById('duas-learned').textContent = stats.duasLearned;
+            }
+
+            setupEventListeners() {
+                // Add click handlers for feature cards
+                const featureCards = document.querySelectorAll('.quick-action');
+                featureCards.forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        // Add ripple effect
+                        this.createRippleEffect(e.currentTarget, e);
+                    });
+                });
+
+                // About section buttons
+                const rateBtn = document.querySelector('button:contains("Rate App")');
+                const shareBtn = document.querySelector('button:contains("Share App")');
+
+                if (rateBtn) {
+                    rateBtn.addEventListener('click', () => {
+                        this.rateApp();
+                    });
+                }
+
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', () => {
+                        this.shareApp();
+                    });
+                }
+            }
+
+            animateStats() {
+                // Animate statistics numbers
+                const statElements = document.querySelectorAll('[id$="-streak"], [id$="-read"], [id$="-count"], [id$="-learned"]');
+                
+                statElements.forEach(element => {
+                    const finalValue = parseInt(element.textContent.replace(/,/g, ''));
+                    let currentValue = 0;
+                    const increment = finalValue / 50;
+                    
+                    const animation = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= finalValue) {
+                            currentValue = finalValue;
+                            clearInterval(animation);
+                        }
+                        
+                        if (element.id.includes('count')) {
+                            element.textContent = Math.floor(currentValue).toLocaleString();
+                        } else {
+                            element.textContent = Math.floor(currentValue);
+                        }
+                    }, 30);
+                });
+            }
+
+            createRippleEffect(element, event) {
+                const ripple = document.createElement('div');
+                const rect = element.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = event.clientX - rect.left - size / 2;
+                const y = event.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(45, 157, 90, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                element.style.position = 'relative';
+                element.style.overflow = 'hidden';
+                element.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            }
+
+            rateApp() {
+                // In a real app, this would open the app store
+                const message = document.createElement('div');
+                message.className = 'fixed top-4 left-4 right-4 bg-islamic-500 text-white p-4 rounded-lg shadow-lg z-50';
+                message.textContent = 'Thank you for your interest! Rating feature coming soon.';
+                document.body.appendChild(message);
+
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 3000);
+            }
+
+            shareApp() {
+                const shareData = {
+                    title: 'MyIslam - Your Islamic Companion',
+                    text: 'Check out MyIslam - a comprehensive Islamic app for prayer times, Quran reading, and more!',
+                    url: window.location.origin
+                };
+
+                if (navigator.share) {
+                    navigator.share(shareData);
+                } else {
+                    // Fallback: copy to clipboard
+                    const shareText = `${shareData.text} ${shareData.url}`;
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        const message = document.createElement('div');
+                        message.className = 'fixed top-4 left-4 right-4 bg-islamic-500 text-white p-4 rounded-lg shadow-lg z-50';
+                        message.textContent = 'App link copied to clipboard!';
+                        document.body.appendChild(message);
+
+                        setTimeout(() => {
+                            document.body.removeChild(message);
+                        }, 3000);
+                    });
+                }
+            }
+        }
+
+        // Add ripple animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize more page
+        document.addEventListener('DOMContentLoaded', () => {
+            new MorePage();
+        });
+    </script>
+</body>
+</html>

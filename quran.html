@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran Reader - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item active flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-islamic-500 rounded-lg flex items-center justify-center">
+                    <span class="text-white text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-islamic-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="sticky top-0 bg-white/90 backdrop-blur-lg border-b border-clay-200 z-40 px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <h1 class="text-xl font-bold text-clay-800">Quran Reader</h1>
+                <div class="flex items-center space-x-2">
+                    <select id="surah-selector" class="clay-button text-sm py-1 px-3">
+                        <option value="1">Al-Fatiha (1)</option>
+                        <option value="2">Al-Baqarah (2)</option>
+                        <option value="3">Ali 'Imran (3)</option>
+                        <option value="112">Al-Ikhlas (112)</option>
+                        <option value="113">Al-Falaq (113)</option>
+                        <option value="114">An-Nas (114)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="audio-btn" class="clay-button p-2">
+                    <span class="text-lg">🔊</span>
+                </button>
+                <button id="settings-btn" class="clay-button p-2">
+                    <span class="text-lg">⚙️</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="px-4 py-4">
+        <input type="text" id="search-input" class="search-input" placeholder="Search Quran (Arabic or English)...">
+    </div>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4">
+        <!-- Reading Controls -->
+        <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-4">
+                <select id="translation-selector" class="clay-button text-sm">
+                    <option value="sahih">Sahih International</option>
+                    <option value="pickthall">Pickthall</option>
+                    <option value="yusufali">Yusuf Ali</option>
+                </select>
+                <div class="flex items-center space-x-2">
+                    <label class="text-sm text-clay-600">Font Size:</label>
+                    <input type="range" id="font-size-slider" min="16" max="32" value="24" class="w-20">
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="bookmark-btn" class="clay-button p-2">
+                    <span class="text-lg">🔖</span>
+                </button>
+                <button id="share-btn" class="clay-button p-2">
+                    <span class="text-lg">📤</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quran Verses -->
+        <div id="verses-container" class="space-y-4">
+            <!-- Verses will be populated by JavaScript -->
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="flex items-center justify-between mt-8">
+            <button id="prev-ayah" class="clay-button flex items-center space-x-2">
+                <span>←</span>
+                <span>Previous</span>
+            </button>
+            <div class="text-center">
+                <p class="text-sm text-clay-600" id="verse-info">Surah Al-Fatiha, Verse 1</p>
+            </div>
+            <button id="next-ayah" class="clay-button flex items-center space-x-2">
+                <span>Next</span>
+                <span>→</span>
+            </button>
+        </div>
+
+        <!-- Reading Progress -->
+        <div class="mt-6">
+            <div class="flex justify-between text-sm text-clay-600 mb-2">
+                <span>Reading Progress</span>
+                <span id="progress-percentage">5%</span>
+            </div>
+            <div class="w-full bg-clay-200 rounded-full h-2">
+                <div class="bg-islamic-500 h-2 rounded-full" style="width: 5%" id="progress-bar"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Audio Player -->
+    <div class="audio-player" id="audio-player">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <button id="play-pause-btn" class="clay-button p-2">
+                    <span class="text-lg">▶️</span>
+                </button>
+                <div>
+                    <p class="font-semibold text-clay-800 text-sm" id="audio-verse-info">Al-Fatiha 1:1</p>
+                    <p class="text-xs text-clay-600">Mishari Al-Afasy</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="close-audio-btn" class="clay-button p-2">
+                    <span class="text-lg">✕</span>
+                </button>
+            </div>
+        </div>
+        <div class="mt-3">
+            <div class="w-full bg-clay-200 rounded-full h-1">
+                <div class="bg-islamic-500 h-1 rounded-full" style="width: 0%" id="audio-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Quran Reader Page Specific JavaScript
+        class QuranReader {
+            constructor() {
+                this.currentSurah = 1;
+                this.currentAyah = 1;
+                this.currentTranslation = 'sahih';
+                this.audioPlaying = false;
+                this.bookmarks = this.loadBookmarks();
+                this.readingHistory = this.loadReadingHistory();
+                
+                this.init();
+            }
+
+            init() {
+                this.loadQuranData();
+                this.setupEventListeners();
+                this.displayCurrentVerse();
+                this.loadUserPreferences();
+            }
+
+            loadQuranData() {
+                // Sample Quran data - in a real app, this would come from a proper database
+                this.quranData = {
+                    1: {
+                        name: 'Al-Fatiha',
+                        verses: [
+                            {
+                                arabic: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
+                                translation: {
+                                    sahih: 'In the name of Allah, the Entirely Merciful, the Especially Merciful.',
+                                    pickthall: 'In the name of Allah, the Beneficent, the Merciful.',
+                                    yusufali: 'In the name of Allah, Most Gracious, Most Merciful.'
+                                }
+                            },
+                            {
+                                arabic: 'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
+                                translation: {
+                                    sahih: '[All] praise is [due] to Allah, Lord of the worlds -',
+                                    pickthall: 'Praise be to Allah, Lord of the Worlds,',
+                                    yusufali: 'Praise be to Allah, the Cherisher and Sustainer of the Worlds;'
+                                }
+                            },
+                            {
+                                arabic: 'الرَّحْمَٰنِ الرَّحِيمِ',
+                                translation: {
+                                    sahih: 'The Entirely Merciful, the Especially Merciful,',
+                                    pickthall: 'The Beneficent, the Merciful:',
+                                    yusufali: 'Most Gracious, Most Merciful;'
+                                }
+                            },
+                            {
+                                arabic: 'مَالِكِ يَوْمِ الدِّينِ',
+                                translation: {
+                                    sahih: 'Sovereign of the Day of Recompense.',
+                                    pickthall: 'Master of the Day of Judgment,',
+                                    yusufali: 'Master of the Day of Judgment.'
+                                }
+                            },
+                            {
+                                arabic: 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
+                                translation: {
+                                    sahih: 'It is You we worship and You we ask for help.',
+                                    pickthall: 'Thee (alone) we worship; Thee (alone) we ask for help.',
+                                    yusufali: 'Thee do we worship, and Thine aid we seek.'
+                                }
+                            },
+                            {
+                                arabic: 'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
+                                translation: {
+                                    sahih: 'Guide us to the straight path -',
+                                    pickthall: 'Show us the straight path,',
+                                    yusufali: 'Show us the straight way,'
+                                }
+                            },
+                            {
+                                arabic: 'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ',
+                                translation: {
+                                    sahih: 'The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.',
+                                    pickthall: 'The path of those whom Thou hast favoured; Not the (path) of those who earn Thine anger nor of those who go astray.',
+                                    yusufali: 'The way of those on whom Thou hast bestowed Thy Grace, those whose (portion) is not wrath, and who go not astray.'
+                                }
+                            }
+                        ]
+                    },
+                    112: {
+                        name: 'Al-Ikhlas',
+                        verses: [
+                            {
+                                arabic: 'قُلْ هُوَ اللَّهُ أَحَدٌ',
+                                translation: {
+                                    sahih: 'Say, "He is Allah, [who is] One,',
+                                    pickthall: 'Say: He is Allah, the One!',
+                                    yusufali: 'Say: He is Allah, the One and Only;'
+                                }
+                            },
+                            {
+                                arabic: 'اللَّهُ الصَّمَدُ',
+                                translation: {
+                                    sahih: 'Allah, the Eternal Refuge.',
+                                    pickthall: 'Allah, the eternally Besought of all!',
+                                    yusufali: 'Allah, the Eternal, Absolute;'
+                                }
+                            },
+                            {
+                                arabic: 'لَمْ يَلِدْ وَلَمْ يُولَدْ',
+                                translation: {
+                                    sahih: 'He neither begets nor is born,',
+                                    pickthall: 'He begetteth not nor was begotten.',
+                                    yusufali: 'He begetteth not, nor is He begotten;'
+                                }
+                            },
+                            {
+                                arabic: 'وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ',
+                                translation: {
+                                    sahih: 'Nor is there to Him any equivalent."',
+                                    pickthall: 'And there is none comparable unto Him.',
+                                    yusufali: 'And there is none like unto Him.'
+                                }
+                            }
+                        ]
+                    }
+                };
+            }
+
+            setupEventListeners() {
+                // Surah selector
+                const surahSelector = document.getElementById('surah-selector');
+                if (surahSelector) {
+                    surahSelector.addEventListener('change', (e) => {
+                        this.currentSurah = parseInt(e.target.value);
+                        this.currentAyah = 1;
+                        this.displayCurrentVerse();
+                    });
+                }
+
+                // Translation selector
+                const translationSelector = document.getElementById('translation-selector');
+                if (translationSelector) {
+                    translationSelector.addEventListener('change', (e) => {
+                        this.currentTranslation = e.target.value;
+                        this.displayCurrentVerse();
+                        this.saveUserPreferences();
+                    });
+                }
+
+                // Font size slider
+                const fontSizeSlider = document.getElementById('font-size-slider');
+                if (fontSizeSlider) {
+                    fontSizeSlider.addEventListener('input', (e) => {
+                        this.updateFontSize(e.target.value);
+                        this.saveUserPreferences();
+                    });
+                }
+
+                // Navigation buttons
+                const prevBtn = document.getElementById('prev-ayah');
+                const nextBtn = document.getElementById('next-ayah');
+
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        this.navigateToPrevious();
+                    });
+                }
+
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        this.navigateToNext();
+                    });
+                }
+
+                // Audio controls
+                const audioBtn = document.getElementById('audio-btn');
+                const playPauseBtn = document.getElementById('play-pause-btn');
+                const closeAudioBtn = document.getElementById('close-audio-btn');
+
+                if (audioBtn) {
+                    audioBtn.addEventListener('click', () => {
+                        this.toggleAudioPlayer();
+                    });
+                }
+
+                if (playPauseBtn) {
+                    playPauseBtn.addEventListener('click', () => {
+                        this.toggleAudioPlayback();
+                    });
+                }
+
+                if (closeAudioBtn) {
+                    closeAudioBtn.addEventListener('click', () => {
+                        this.hideAudioPlayer();
+                    });
+                }
+
+                // Bookmark and share
+                const bookmarkBtn = document.getElementById('bookmark-btn');
+                const shareBtn = document.getElementById('share-btn');
+
+                if (bookmarkBtn) {
+                    bookmarkBtn.addEventListener('click', () => {
+                        this.toggleBookmark();
+                    });
+                }
+
+                if (shareBtn) {
+                    shareBtn.addEventListener('click', () => {
+                        this.shareVerse();
+                    });
+                }
+
+                // Search functionality
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        this.searchQuran(e.target.value);
+                    });
+                }
+            }
+
+            displayCurrentVerse() {
+                const container = document.getElementById('verses-container');
+                const verseInfo = document.getElementById('verse-info');
+                const audioVerseInfo = document.getElementById('audio-verse-info');
+
+                if (!container || !this.quranData[this.currentSurah]) {
+                    return;
+                }
+
+                const surah = this.quranData[this.currentSurah];
+                const verse = surah.verses[this.currentAyah - 1];
+
+                if (!verse) {
+                    return;
+                }
+
+                // Clear container
+                container.innerHTML = '';
+
+                // Create verse element
+                const verseElement = document.createElement('div');
+                verseElement.className = 'quran-verse';
+                verseElement.innerHTML = `
+                    <div class="verse-arabic" style="font-size: ${this.getCurrentFontSize()}px">
+                        ${verse.arabic}
+                    </div>
+                    <div class="verse-translation">
+                        ${verse.translation[this.currentTranslation]}
+                    </div>
+                    <div class="verse-reference">
+                        ${surah.name} ${this.currentAyah}:${surah.verses.length}
+                    </div>
+                `;
+
+                container.appendChild(verseElement);
+
+                // Update verse info
+                if (verseInfo) {
+                    verseInfo.textContent = `${surah.name}, Verse ${this.currentAyah}`;
+                }
+
+                if (audioVerseInfo) {
+                    audioVerseInfo.textContent = `${surah.name} ${this.currentSurah}:${this.currentAyah}`;
+                }
+
+                // Update progress
+                this.updateReadingProgress();
+
+                // Save reading history
+                this.saveReadingHistory();
+            }
+
+            navigateToPrevious() {
+                if (this.currentAyah > 1) {
+                    this.currentAyah--;
+                } else if (this.currentSurah > 1) {
+                    // Go to previous surah
+                    this.currentSurah--;
+                    this.currentAyah = this.quranData[this.currentSurah]?.verses?.length || 1;
+                }
+                this.displayCurrentVerse();
+            }
+
+            navigateToNext() {
+                const currentSurahData = this.quranData[this.currentSurah];
+                if (currentSurahData && this.currentAyah < currentSurahData.verses.length) {
+                    this.currentAyah++;
+                } else if (this.currentSurah < Object.keys(this.quranData).length) {
+                    // Go to next surah
+                    this.currentSurah++;
+                    this.currentAyah = 1;
+                }
+                this.displayCurrentVerse();
+            }
+
+            updateFontSize(size) {
+                const arabicElements = document.querySelectorAll('.verse-arabic');
+                arabicElements.forEach(element => {
+                    element.style.fontSize = `${size}px`;
+                });
+            }
+
+            getCurrentFontSize() {
+                const slider = document.getElementById('font-size-slider');
+                return slider ? slider.value : 24;
+            }
+
+            toggleAudioPlayer() {
+                const audioPlayer = document.getElementById('audio-player');
+                if (audioPlayer) {
+                    audioPlayer.classList.toggle('active');
+                }
+            }
+
+            hideAudioPlayer() {
+                const audioPlayer = document.getElementById('audio-player');
+                if (audioPlayer) {
+                    audioPlayer.classList.remove('active');
+                }
+            }
+
+            toggleAudioPlayback() {
+                const playPauseBtn = document.getElementById('play-pause-btn');
+                this.audioPlaying = !this.audioPlaying;
+                
+                if (playPauseBtn) {
+                    playPauseBtn.innerHTML = `<span class="text-lg">${this.audioPlaying ? '⏸️' : '▶️'}</span>`;
+                }
+
+                if (this.audioPlaying) {
+                    this.startAudioProgress();
+                } else {
+                    this.stopAudioProgress();
+                }
+            }
+
+            startAudioProgress() {
+                let progress = 0;
+                const progressBar = document.getElementById('audio-progress');
+                
+                this.audioInterval = setInterval(() => {
+                    progress += 1;
+                    if (progressBar) {
+                        progressBar.style.width = `${progress}%`;
+                    }
+                    
+                    if (progress >= 100) {
+                        this.stopAudioProgress();
+                        this.audioPlaying = false;
+                        const playPauseBtn = document.getElementById('play-pause-btn');
+                        if (playPauseBtn) {
+                            playPauseBtn.innerHTML = '<span class="text-lg">▶️</span>';
+                        }
+                    }
+                }, 100);
+            }
+
+            stopAudioProgress() {
+                if (this.audioInterval) {
+                    clearInterval(this.audioInterval);
+                    this.audioInterval = null;
+                }
+            }
+
+            toggleBookmark() {
+                const bookmarkKey = `${this.currentSurah}:${this.currentAyah}`;
+                const bookmarkBtn = document.getElementById('bookmark-btn');
+                
+                if (this.bookmarks.includes(bookmarkKey)) {
+                    this.bookmarks = this.bookmarks.filter(b => b !== bookmarkKey);
+                    if (bookmarkBtn) {
+                        bookmarkBtn.innerHTML = '<span class="text-lg">🔖</span>';
+                    }
+                } else {
+                    this.bookmarks.push(bookmarkKey);
+                    if (bookmarkBtn) {
+                        bookmarkBtn.innerHTML = '<span class="text-lg">🔖</span>';
+                    }
+                }
+                
+                this.saveBookmarks();
+            }
+
+            shareVerse() {
+                const surah = this.quranData[this.currentSurah];
+                const verse = surah.verses[this.currentAyah - 1];
+                const shareText = `${surah.name} ${this.currentAyah}\n\n"${verse.translation[this.currentTranslation]}"\n\n- Shared from MyIslam App`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: `${surah.name} ${this.currentAyah}`,
+                        text: shareText
+                    });
+                } else {
+                    // Fallback: copy to clipboard
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        alert('Verse copied to clipboard!');
+                    });
+                }
+            }
+
+            searchQuran(query) {
+                if (!query.trim()) {
+                    this.displayCurrentVerse();
+                    return;
+                }
+
+                // Simple search implementation
+                const results = [];
+                Object.entries(this.quranData).forEach(([surahNum, surah]) => {
+                    surah.verses.forEach((verse, ayahIndex) => {
+                        const searchText = `${verse.arabic} ${verse.translation.sahih}`.toLowerCase();
+                        if (searchText.includes(query.toLowerCase())) {
+                            results.push({
+                                surah: parseInt(surahNum),
+                                ayah: ayahIndex + 1,
+                                verse: verse
+                            });
+                        }
+                    });
+                });
+
+                this.displaySearchResults(results);
+            }
+
+            displaySearchResults(results) {
+                const container = document.getElementById('verses-container');
+                if (!container) return;
+
+                container.innerHTML = '';
+
+                if (results.length === 0) {
+                    container.innerHTML = '<p class="text-center text-clay-600 py-8">No results found</p>';
+                    return;
+                }
+
+                results.forEach(result => {
+                    const resultElement = document.createElement('div');
+                    resultElement.className = 'quran-verse cursor-pointer';
+                    resultElement.innerHTML = `
+                        <div class="verse-arabic" style="font-size: ${this.getCurrentFontSize()}px">
+                            ${result.verse.arabic}
+                        </div>
+                        <div class="verse-translation">
+                            ${result.verse.translation[this.currentTranslation]}
+                        </div>
+                        <div class="verse-reference">
+                            ${this.quranData[result.surah].name} ${result.ayah}
+                        </div>
+                    `;
+
+                    resultElement.addEventListener('click', () => {
+                        this.currentSurah = result.surah;
+                        this.currentAyah = result.ayah;
+                        this.displayCurrentVerse();
+                        
+                        // Clear search
+                        const searchInput = document.getElementById('search-input');
+                        if (searchInput) {
+                            searchInput.value = '';
+                        }
+                    });
+
+                    container.appendChild(resultElement);
+                });
+            }
+
+            updateReadingProgress() {
+                // Simple progress calculation
+                const totalVerses = Object.values(this.quranData).reduce((sum, surah) => sum + surah.verses.length, 0);
+                const currentVerseNumber = this.calculateVerseNumber();
+                const progress = Math.round((currentVerseNumber / totalVerses) * 100);
+
+                const progressBar = document.getElementById('progress-bar');
+                const progressPercentage = document.getElementById('progress-percentage');
+
+                if (progressBar) {
+                    progressBar.style.width = `${progress}%`;
+                }
+
+                if (progressPercentage) {
+                    progressPercentage.textContent = `${progress}%`;
+                }
+            }
+
+            calculateVerseNumber() {
+                let verseNumber = 0;
+                
+                // Add verses from previous surahs
+                for (let i = 1; i < this.currentSurah; i++) {
+                    if (this.quranData[i]) {
+                        verseNumber += this.quranData[i].verses.length;
+                    }
+                }
+                
+                // Add current verse in current surah
+                verseNumber += this.currentAyah;
+                
+                return verseNumber;
+            }
+
+            loadBookmarks() {
+                const saved = localStorage.getItem('quran-bookmarks');
+                return saved ? JSON.parse(saved) : [];
+            }
+
+            saveBookmarks() {
+                localStorage.setItem('quran-bookmarks', JSON.stringify(this.bookmarks));
+            }
+
+            loadReadingHistory() {
+                const saved = localStorage.getItem('quran-reading-history');
+                return saved ? JSON.parse(saved) : {};
+            }
+
+            saveReadingHistory() {
+                const key = `${this.currentSurah}:${this.currentAyah}`;
+                this.readingHistory[key] = new Date().toISOString();
+                localStorage.setItem('quran-reading-history', JSON.stringify(this.readingHistory));
+            }
+
+            loadUserPreferences() {
+                const saved = localStorage.getItem('quran-preferences');
+                if (saved) {
+                    const prefs = JSON.parse(saved);
+                    
+                    if (prefs.translation) {
+                        this.currentTranslation = prefs.translation;
+                        const selector = document.getElementById('translation-selector');
+                        if (selector) {
+                            selector.value = prefs.translation;
+                        }
+                    }
+                    
+                    if (prefs.fontSize) {
+                        const slider = document.getElementById('font-size-slider');
+                        if (slider) {
+                            slider.value = prefs.fontSize;
+                            this.updateFontSize(prefs.fontSize);
+                        }
+                    }
+                }
+            }
+
+            saveUserPreferences() {
+                const prefs = {
+                    translation: this.currentTranslation,
+                    fontSize: this.getCurrentFontSize()
+                };
+                localStorage.setItem('quran-preferences', JSON.stringify(prefs));
+            }
+        }
+
+        // Initialize Quran reader
+        document.addEventListener('DOMContentLoaded', () => {
+            new QuranReader();
+        });
+    </script>
+</body>
+</html>

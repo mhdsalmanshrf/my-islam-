@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Duas - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="sticky top-0 bg-white/90 backdrop-blur-lg border-b border-clay-200 z-40 px-4 py-4">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <h1 class="text-xl font-bold text-clay-800">Daily Duas</h1>
+                <span class="bg-islamic-100 text-islamic-700 px-2 py-1 rounded-full text-xs font-semibold" id="duas-count">24 Duas</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="favorites-btn" class="clay-button p-2">
+                    <span class="text-lg">❤️</span>
+                </button>
+                <button id="shuffle-btn" class="clay-button p-2">
+                    <span class="text-lg">🔄</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="px-4 py-4">
+        <input type="text" id="search-input" class="search-input" placeholder="Search duas (Arabic or English)...">
+    </div>
+
+    <!-- Category Filter -->
+    <div class="px-4 mb-6">
+        <div class="flex space-x-2 overflow-x-auto pb-2" id="category-filter">
+            <button class="category-btn active clay-button whitespace-nowrap" data-category="all">All</button>
+            <button class="category-btn clay-button whitespace-nowrap" data-category="morning">Morning</button>
+            <button class="category-btn clay-button whitespace-nowrap" data-category="evening">Evening</button>
+            <button class="category-btn clay-button whitespace-nowrap" data-category="prayer">Prayer</button>
+            <button class="category-btn clay-button whitespace-nowrap" data-category="travel">Travel</button>
+            <button class="category-btn clay-button whitespace-nowrap" data-category="protection">Protection</button>
+            <button class="category-btn clay-button whitespace-nowrap" data-category="food">Food</button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4">
+        <!-- Duas List -->
+        <div id="duas-container" class="space-y-4">
+            <!-- Duas will be populated by JavaScript -->
+        </div>
+
+        <!-- No Results -->
+        <div id="no-results" class="text-center py-8 hidden">
+            <div class="text-4xl mb-4">🔍</div>
+            <p class="text-clay-600">No duas found matching your search</p>
+        </div>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        // Duas Page Specific JavaScript
+        class DuasPage {
+            constructor() {
+                this.duas = [];
+                this.filteredDuas = [];
+                this.currentCategory = 'all';
+                this.showingFavorites = false;
+                this.favorites = this.loadFavorites();
+                
+                this.init();
+            }
+
+            init() {
+                this.loadDuasData();
+                this.setupEventListeners();
+                this.displayDuas();
+                this.updateDuasCount();
+            }
+
+            loadDuasData() {
+                // Sample Duas data - in a real app, this would come from a proper database
+                this.duas = [
+                    {
+                        id: 1,
+                        category: 'morning',
+                        arabic: 'أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ',
+                        transliteration: 'Asbahna wa asbahal-mulku lillah',
+                        translation: 'We have reached the morning and at this very time unto Allah belongs all sovereignty.',
+                        reference: 'Hisnul Muslim',
+                        favorite: false
+                    },
+                    {
+                        id: 2,
+                        category: 'evening',
+                        arabic: 'أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلَّهِ',
+                        transliteration: 'Amsayna wa amsal-mulku lillah',
+                        translation: 'We have reached the evening and at this very time unto Allah belongs all sovereignty.',
+                        reference: 'Hisnul Muslim',
+                        favorite: false
+                    },
+                    {
+                        id: 3,
+                        category: 'prayer',
+                        arabic: 'اللَّهُمَّ أَعِنِّي عَلَى ذِكْرِكَ وَشُكْرِكَ وَحُسْنِ عِبَادَتِكَ',
+                        transliteration: 'Allahumma a\'inni ala dhikrika wa shukrika wa husni ibadatika',
+                        translation: 'O Allah, help me to remember You, thank You, and worship You in the best manner.',
+                        reference: 'Abu Dawood',
+                        favorite: true
+                    },
+                    {
+                        id: 4,
+                        category: 'travel',
+                        arabic: 'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ',
+                        transliteration: 'Subhanal-ladhi sakhkhara lana hadha wa ma kunna lahu muqrinin',
+                        translation: 'Glory be to Him who has subjected this to us, and we could never have it (by our efforts).',
+                        reference: 'Quran 43:13',
+                        favorite: false
+                    },
+                    {
+                        id: 5,
+                        category: 'protection',
+                        arabic: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ',
+                        transliteration: 'A\'udhu bi kalimatillahit-tammati min sharri ma khalaq',
+                        translation: 'I seek refuge in the perfect words of Allah from the evil of what He has created.',
+                        reference: 'Muslim',
+                        favorite: true
+                    },
+                    {
+                        id: 6,
+                        category: 'food',
+                        arabic: 'بِسْمِ اللَّهِ',
+                        transliteration: 'Bismillah',
+                        translation: 'In the name of Allah.',
+                        reference: 'Bukhari',
+                        favorite: false
+                    },
+                    {
+                        id: 7,
+                        category: 'food',
+                        arabic: 'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ',
+                        transliteration: 'Alhamdu lillahil-ladhi at\'amani hadha wa razaqanihi min ghayri hawlin minni wa la quwwah',
+                        translation: 'Praise be to Allah who has fed me this food and provided it for me without any power or strength from myself.',
+                        reference: 'Tirmidhi',
+                        favorite: false
+                    },
+                    {
+                        id: 8,
+                        category: 'morning',
+                        arabic: 'اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ',
+                        transliteration: 'Allahumma bika asbahna wa bika amsayna wa bika nahya wa bika namutu wa ilaykan-nushur',
+                        translation: 'O Allah, by Your leave we have reached the morning and by Your leave we have reached the evening, by Your leave we live and die and unto You is our resurrection.',
+                        reference: 'Tirmidhi',
+                        favorite: false
+                    },
+                    {
+                        id: 9,
+                        category: 'evening',
+                        arabic: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ',
+                        transliteration: 'Allahumma anta rabbi la ilaha illa ant',
+                        translation: 'O Allah, You are my Lord, there is no god but You.',
+                        reference: 'Bukhari',
+                        favorite: true
+                    },
+                    {
+                        id: 10,
+                        category: 'protection',
+                        arabic: 'بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ',
+                        transliteration: 'Bismillahil-ladhi la yadurru ma\'a ismihi shay\'un fil-ardi wa la fis-sama\'i wa huwas-sami\'ul-alim',
+                        translation: 'In the name of Allah with whose name nothing is harmed on earth nor in heaven, and He is the All-Hearing, All-Knowing.',
+                        reference: 'Tirmidhi',
+                        favorite: false
+                    }
+                ];
+
+                // Mark favorites
+                this.duas.forEach(dua => {
+                    dua.favorite = this.favorites.includes(dua.id);
+                });
+            }
+
+            setupEventListeners() {
+                // Search input
+                const searchInput = document.getElementById('search-input');
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        this.searchDuas(e.target.value);
+                    });
+                }
+
+                // Category filter
+                const categoryButtons = document.querySelectorAll('.category-btn');
+                categoryButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.filterByCategory(e.target.dataset.category);
+                        this.updateActiveCategory(e.target);
+                    });
+                });
+
+                // Favorites button
+                const favoritesBtn = document.getElementById('favorites-btn');
+                if (favoritesBtn) {
+                    favoritesBtn.addEventListener('click', () => {
+                        this.toggleFavorites();
+                    });
+                }
+
+                // Shuffle button
+                const shuffleBtn = document.getElementById('shuffle-btn');
+                if (shuffleBtn) {
+                    shuffleBtn.addEventListener('click', () => {
+                        this.shuffleDuas();
+                    });
+                }
+            }
+
+            displayDuas() {
+                const container = document.getElementById('duas-container');
+                const noResults = document.getElementById('no-results');
+                
+                if (!container) return;
+
+                // Clear container
+                container.innerHTML = '';
+
+                const duasToShow = this.showingFavorites ? 
+                    this.duas.filter(dua => dua.favorite) : 
+                    this.filteredDuas.length > 0 ? this.filteredDuas : this.duas;
+
+                if (duasToShow.length === 0) {
+                    container.classList.add('hidden');
+                    noResults?.classList.remove('hidden');
+                    return;
+                }
+
+                container.classList.remove('hidden');
+                noResults?.classList.add('hidden');
+
+                duasToShow.forEach(dua => {
+                    const duaElement = this.createDuaElement(dua);
+                    container.appendChild(duaElement);
+                });
+            }
+
+            createDuaElement(dua) {
+                const duaCard = document.createElement('div');
+                duaCard.className = 'quran-verse';
+                duaCard.innerHTML = `
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-islamic-100 text-islamic-700 px-2 py-1 rounded-full text-xs font-semibold">
+                                ${this.getCategoryName(dua.category)}
+                            </span>
+                            <span class="text-xs text-clay-500">${dua.reference}</span>
+                        </div>
+                        <button class="favorite-btn p-1 rounded-full transition-colors ${dua.favorite ? 'text-red-500' : 'text-clay-400'}" data-dua-id="${dua.id}">
+                            <span class="text-lg">${dua.favorite ? '❤️' : '🤍'}</span>
+                        </button>
+                    </div>
+                    
+                    <div class="verse-arabic text-right mb-3" dir="rtl" style="font-size: 20px">
+                        ${dua.arabic}
+                    </div>
+                    
+                    <div class="verse-translation mb-2">
+                        <p class="text-sm text-clay-600 italic mb-2">${dua.transliteration}</p>
+                        <p>${dua.translation}</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mt-4 pt-4 border-t border-clay-200">
+                        <div class="flex space-x-2">
+                            <button class="copy-btn clay-button text-xs py-1 px-3" data-dua-id="${dua.id}">
+                                📋 Copy
+                            </button>
+                            <button class="share-btn clay-button text-xs py-1 px-3" data-dua-id="${dua.id}">
+                                📤 Share
+                            </button>
+                        </div>
+                        <button class="play-btn clay-button text-xs py-1 px-3" data-dua-id="${dua.id}">
+                            🔊 Play
+                        </button>
+                    </div>
+                `;
+
+                // Add event listeners
+                this.addDuaEventListeners(duaCard, dua);
+
+                return duaCard;
+            }
+
+            addDuaEventListeners(duaCard, dua) {
+                // Favorite button
+                const favoriteBtn = duaCard.querySelector('.favorite-btn');
+                favoriteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleFavorite(dua.id);
+                });
+
+                // Copy button
+                const copyBtn = duaCard.querySelector('.copy-btn');
+                copyBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.copyDua(dua);
+                });
+
+                // Share button
+                const shareBtn = duaCard.querySelector('.share-btn');
+                shareBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.shareDua(dua);
+                });
+
+                // Play button
+                const playBtn = duaCard.querySelector('.play-btn');
+                playBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.playDua(dua);
+                });
+            }
+
+            getCategoryName(category) {
+                const categoryNames = {
+                    morning: 'Morning',
+                    evening: 'Evening',
+                    prayer: 'Prayer',
+                    travel: 'Travel',
+                    protection: 'Protection',
+                    food: 'Food'
+                };
+                return categoryNames[category] || category;
+            }
+
+            filterByCategory(category) {
+                this.currentCategory = category;
+                
+                if (category === 'all') {
+                    this.filteredDuas = [];
+                } else {
+                    this.filteredDuas = this.duas.filter(dua => dua.category === category);
+                }
+                
+                this.displayDuas();
+            }
+
+            updateActiveCategory(activeButton) {
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                activeButton.classList.add('active');
+            }
+
+            searchDuas(query) {
+                if (!query.trim()) {
+                    this.filteredDuas = [];
+                    this.displayDuas();
+                    return;
+                }
+
+                const searchTerm = query.toLowerCase();
+                this.filteredDuas = this.duas.filter(dua => 
+                    dua.arabic.includes(query) ||
+                    dua.transliteration.toLowerCase().includes(searchTerm) ||
+                    dua.translation.toLowerCase().includes(searchTerm) ||
+                    this.getCategoryName(dua.category).toLowerCase().includes(searchTerm)
+                );
+
+                this.displayDuas();
+            }
+
+            toggleFavorites() {
+                this.showingFavorites = !this.showingFavorites;
+                const favoritesBtn = document.getElementById('favorites-btn');
+                
+                if (favoritesBtn) {
+                    favoritesBtn.style.background = this.showingFavorites ? 'rgba(45, 157, 90, 0.1)' : '';
+                }
+
+                this.displayDuas();
+                this.updateDuasCount();
+            }
+
+            shuffleDuas() {
+                if (this.filteredDuas.length > 0) {
+                    this.filteredDuas = this.shuffleArray(this.filteredDuas);
+                } else {
+                    this.duas = this.shuffleArray(this.duas);
+                }
+                this.displayDuas();
+            }
+
+            shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            toggleFavorite(duaId) {
+                const dua = this.duas.find(d => d.id === duaId);
+                if (dua) {
+                    dua.favorite = !dua.favorite;
+                    
+                    if (dua.favorite) {
+                        this.favorites.push(duaId);
+                    } else {
+                        this.favorites = this.favorites.filter(id => id !== duaId);
+                    }
+                    
+                    this.saveFavorites();
+                    this.displayDuas();
+                }
+            }
+
+            copyDua(dua) {
+                const text = `${dua.arabic}\n\n${dua.transliteration}\n\n${dua.translation}\n\n- ${dua.reference}`;
+                
+                navigator.clipboard.writeText(text).then(() => {
+                    this.showToast('Dua copied to clipboard!');
+                });
+            }
+
+            shareDua(dua) {
+                const text = `"${dua.translation}"\n\n- ${dua.reference}\n\nShared from MyIslam App`;
+                
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Dua from MyIslam',
+                        text: text
+                    });
+                } else {
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.showToast('Dua copied to clipboard!');
+                    });
+                }
+            }
+
+            playDua(dua) {
+                // In a real app, this would play audio
+                this.showToast('Audio playback coming soon!');
+            }
+
+            updateDuasCount() {
+                const countElement = document.getElementById('duas-count');
+                if (countElement) {
+                    const count = this.showingFavorites ? 
+                        this.duas.filter(d => d.favorite).length : 
+                        this.duas.length;
+                    countElement.textContent = `${count} Duas`;
+                }
+            }
+
+            loadFavorites() {
+                const saved = localStorage.getItem('duas-favorites');
+                return saved ? JSON.parse(saved) : [];
+            }
+
+            saveFavorites() {
+                localStorage.setItem('duas-favorites', JSON.stringify(this.favorites));
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-4 left-4 right-4 bg-islamic-500 text-white p-3 rounded-lg shadow-lg z-50 text-center';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 3000);
+            }
+        }
+
+        // Initialize duas page
+        document.addEventListener('DOMContentLoaded', () => {
+            new DuasPage();
+        });
+    </script>
+</body>
+</html>

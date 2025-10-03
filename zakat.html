@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zakat Calculator - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4 pt-6">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-clay-800 mb-2">Zakat Calculator</h1>
+            <p class="text-clay-600">Calculate your annual zakat</p>
+        </header>
+
+        <!-- Nisab Information -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-2xl p-6 shadow-lg border border-islamic-200">
+                <h2 class="text-xl font-semibold text-islamic-800 mb-4">Current Nisab Value</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <div class="text-sm text-islamic-700 mb-1">Gold Nisab (87.48g)</div>
+                        <div class="text-2xl font-bold text-islamic-800" id="gold-nisab">$5,247</div>
+                        <div class="text-xs text-islamic-600">@ $60/g</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-sm text-islamic-700 mb-1">Silver Nisab (612.36g)</div>
+                        <div class="text-2xl font-bold text-islamic-800" id="silver-nisab">$429</div>
+                        <div class="text-xs text-islamic-600">@ $0.70/g</div>
+                    </div>
+                </div>
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-islamic-700">
+                        Nisab is the minimum amount of wealth you must possess for a full lunar year before zakat becomes obligatory.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assets Section -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Your Assets</h2>
+            
+            <!-- Cash and Bank -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200 mb-4">
+                <h3 class="text-lg font-semibold text-clay-800 mb-4">💰 Cash & Bank</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Cash in Hand</label>
+                        <input type="number" id="cash-hand" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Bank Accounts</label>
+                        <input type="number" id="bank-accounts" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Savings</label>
+                        <input type="number" id="savings" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gold & Silver -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200 mb-4">
+                <h3 class="text-lg font-semibold text-clay-800 mb-4">🥇 Gold & Silver</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Gold (grams)</label>
+                        <input type="number" id="gold-grams" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.1">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Gold Price ($/g)</label>
+                        <input type="number" id="gold-price" class="zakat-input w-32 text-right" value="60" min="0" step="0.01">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Silver (grams)</label>
+                        <input type="number" id="silver-grams" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.1">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Silver Price ($/g)</label>
+                        <input type="number" id="silver-price" class="zakat-input w-32 text-right" value="0.70" min="0" step="0.01">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investments -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200 mb-4">
+                <h3 class="text-lg font-semibold text-clay-800 mb-4">📈 Investments</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Stocks & Shares</label>
+                        <input type="number" id="stocks" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Business Assets</label>
+                        <input type="number" id="business-assets" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Receivables</label>
+                        <input type="number" id="receivables" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Assets -->
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200 mb-4">
+                <h3 class="text-lg font-semibold text-clay-800 mb-4">🏠 Other Assets</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Property (Investment)</label>
+                        <input type="number" id="property-investment" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Other Assets</label>
+                        <input type="number" id="other-assets" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Liabilities Section -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Liabilities</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Debts & Loans</label>
+                        <input type="number" id="debts" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Monthly Expenses</label>
+                        <input type="number" id="expenses" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <label class="text-clay-700">Other Liabilities</label>
+                        <input type="number" id="other-liabilities" class="zakat-input w-32 text-right" placeholder="0" min="0" step="0.01">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculation Results -->
+        <section class="mb-8">
+            <div class="zakat-result">
+                <h2 class="text-xl font-semibold text-islamic-800 mb-4">Zakat Calculation</h2>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <div class="text-sm text-islamic-700 mb-1">Total Assets</div>
+                        <div class="text-2xl font-bold text-islamic-800" id="total-assets">$0</div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-islamic-700 mb-1">Total Liabilities</div>
+                        <div class="text-2xl font-bold text-islamic-800" id="total-liabilities">$0</div>
+                    </div>
+                </div>
+                <div class="border-t border-islamic-300 pt-4 mb-4">
+                    <div class="text-sm text-islamic-700 mb-1">Net Worth</div>
+                    <div class="text-3xl font-bold text-islamic-800" id="net-worth">$0</div>
+                </div>
+                <div class="bg-islamic-100 rounded-lg p-4 mb-4">
+                    <div class="text-sm text-islamic-700 mb-2">Zakat Payable (2.5%)</div>
+                    <div class="text-4xl font-bold text-islamic-800" id="zakat-amount">$0</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-sm text-islamic-600 mb-2" id="zakat-status">
+                        Your net worth is below the nisab threshold. Zakat is not obligatory.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Quick Actions</h2>
+            <div class="grid grid-cols-2 gap-3">
+                <button id="save-calculation" class="clay-button py-3">
+                    <span class="text-lg mr-2">💾</span>
+                    Save Calculation
+                </button>
+                <button id="export-pdf" class="clay-button py-3">
+                    <span class="text-lg mr-2">📄</span>
+                    Export PDF
+                </button>
+                <button id="reset-form" class="clay-button py-3">
+                    <span class="text-lg mr-2">🔄</span>
+                    Reset Form
+                </button>
+                <button id="zakat-guide" class="clay-button py-3">
+                    <span class="text-lg mr-2">📚</span>
+                    Zakat Guide
+                </button>
+            </div>
+        </section>
+
+        <!-- Zakat Information -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-2xl p-6 shadow-lg border border-islamic-200">
+                <h2 class="text-xl font-semibold text-islamic-800 mb-4">About Zakat</h2>
+                <div class="space-y-3 text-islamic-700 text-sm">
+                    <p>
+                        <strong>What is Zakat?</strong> Zakat is one of the Five Pillars of Islam. It is an obligatory form of charity that purifies wealth and helps those in need.
+                    </p>
+                    <p>
+                        <strong>Who must pay Zakat?</strong> Muslims who possess wealth above the nisab threshold for a full lunar year must pay 2.5% of their qualifying assets.
+                    </p>
+                    <p>
+                        <strong>When to pay?</strong> Zakat should be paid annually after your wealth has been above nisab for one lunar year.
+                    </p>
+                    <p>
+                        <strong>Who receives Zakat?</strong> The Quran specifies 8 categories of recipients including the poor, needy, those in debt, and travelers in need.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        // Zakat Calculator Page Specific JavaScript
+        class ZakatCalculator {
+            constructor() {
+                this.goldPrice = 60; // USD per gram
+                this.silverPrice = 0.70; // USD per gram
+                this.goldNisab = 87.48; // grams
+                this.silverNisab = 612.36; // grams
+                
+                this.assets = {
+                    cashHand: 0,
+                    bankAccounts: 0,
+                    savings: 0,
+                    goldGrams: 0,
+                    silverGrams: 0,
+                    stocks: 0,
+                    businessAssets: 0,
+                    receivables: 0,
+                    propertyInvestment: 0,
+                    otherAssets: 0
+                };
+                
+                this.liabilities = {
+                    debts: 0,
+                    expenses: 0,
+                    otherLiabilities: 0
+                };
+                
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateNisabDisplay();
+                this.calculateZakat();
+                this.loadSavedData();
+            }
+
+            setupEventListeners() {
+                // Asset inputs
+                const assetInputs = [
+                    'cash-hand', 'bank-accounts', 'savings', 'gold-grams', 'silver-grams',
+                    'stocks', 'business-assets', 'receivables', 'property-investment', 'other-assets'
+                ];
+                
+                assetInputs.forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) {
+                        input.addEventListener('input', () => {
+                            this.updateAssets();
+                            this.calculateZakat();
+                        });
+                    }
+                });
+
+                // Liability inputs
+                const liabilityInputs = ['debts', 'expenses', 'other-liabilities'];
+                liabilityInputs.forEach(id => {
+                    const input = document.getElementById(id);
+                    if (input) {
+                        input.addEventListener('input', () => {
+                            this.updateLiabilities();
+                            this.calculateZakat();
+                        });
+                    }
+                });
+
+                // Price inputs
+                document.getElementById('gold-price')?.addEventListener('input', () => {
+                    this.goldPrice = parseFloat(document.getElementById('gold-price').value) || 60;
+                    this.updateNisabDisplay();
+                    this.calculateZakat();
+                });
+
+                document.getElementById('silver-price')?.addEventListener('input', () => {
+                    this.silverPrice = parseFloat(document.getElementById('silver-price').value) || 0.70;
+                    this.updateNisabDisplay();
+                    this.calculateZakat();
+                });
+
+                // Action buttons
+                document.getElementById('save-calculation')?.addEventListener('click', () => {
+                    this.saveCalculation();
+                });
+
+                document.getElementById('export-pdf')?.addEventListener('click', () => {
+                    this.exportPDF();
+                });
+
+                document.getElementById('reset-form')?.addEventListener('click', () => {
+                    this.resetForm();
+                });
+
+                document.getElementById('zakat-guide')?.addEventListener('click', () => {
+                    this.showZakatGuide();
+                });
+            }
+
+            updateAssets() {
+                this.assets.cashHand = parseFloat(document.getElementById('cash-hand')?.value) || 0;
+                this.assets.bankAccounts = parseFloat(document.getElementById('bank-accounts')?.value) || 0;
+                this.assets.savings = parseFloat(document.getElementById('savings')?.value) || 0;
+                this.assets.goldGrams = parseFloat(document.getElementById('gold-grams')?.value) || 0;
+                this.assets.silverGrams = parseFloat(document.getElementById('silver-grams')?.value) || 0;
+                this.assets.stocks = parseFloat(document.getElementById('stocks')?.value) || 0;
+                this.assets.businessAssets = parseFloat(document.getElementById('business-assets')?.value) || 0;
+                this.assets.receivables = parseFloat(document.getElementById('receivables')?.value) || 0;
+                this.assets.propertyInvestment = parseFloat(document.getElementById('property-investment')?.value) || 0;
+                this.assets.otherAssets = parseFloat(document.getElementById('other-assets')?.value) || 0;
+            }
+
+            updateLiabilities() {
+                this.liabilities.debts = parseFloat(document.getElementById('debts')?.value) || 0;
+                this.liabilities.expenses = parseFloat(document.getElementById('expenses')?.value) || 0;
+                this.liabilities.otherLiabilities = parseFloat(document.getElementById('other-liabilities')?.value) || 0;
+            }
+
+            updateNisabDisplay() {
+                const goldNisabValue = this.goldNisab * this.goldPrice;
+                const silverNisabValue = this.silverNisab * this.silverPrice;
+
+                document.getElementById('gold-nisab').textContent = this.formatCurrency(goldNisabValue);
+                document.getElementById('silver-nisab').textContent = this.formatCurrency(silverNisabValue);
+            }
+
+            calculateZakat() {
+                // Calculate total assets
+                let totalAssets = 0;
+                
+                // Cash and bank
+                totalAssets += this.assets.cashHand;
+                totalAssets += this.assets.bankAccounts;
+                totalAssets += this.assets.savings;
+                
+                // Gold and silver
+                totalAssets += this.assets.goldGrams * this.goldPrice;
+                totalAssets += this.assets.silverGrams * this.silverPrice;
+                
+                // Investments and other assets
+                totalAssets += this.assets.stocks;
+                totalAssets += this.assets.businessAssets;
+                totalAssets += this.assets.receivables;
+                totalAssets += this.assets.propertyInvestment;
+                totalAssets += this.assets.otherAssets;
+
+                // Calculate total liabilities
+                let totalLiabilities = 0;
+                totalLiabilities += this.liabilities.debts;
+                totalLiabilities += this.liabilities.expenses;
+                totalLiabilities += this.liabilities.otherLiabilities;
+
+                // Calculate net worth
+                const netWorth = totalAssets - totalLiabilities;
+
+                // Calculate nisab (use the lower of gold and silver nisab)
+                const goldNisabValue = this.goldNisab * this.goldPrice;
+                const silverNisabValue = this.silverNisab * this.silverPrice;
+                const nisabThreshold = Math.min(goldNisabValue, silverNisabValue);
+
+                // Calculate zakat
+                let zakatAmount = 0;
+                let zakatStatus = '';
+
+                if (netWorth >= nisabThreshold) {
+                    zakatAmount = netWorth * 0.025; // 2.5%
+                    zakatStatus = `Zakat is obligatory on your wealth. You should pay 2.5% of your net worth.`;
+                } else {
+                    zakatStatus = `Your net worth is below the nisab threshold. Zakat is not obligatory.`;
+                }
+
+                // Update display
+                this.updateCalculationDisplay(totalAssets, totalLiabilities, netWorth, zakatAmount, zakatStatus);
+            }
+
+            updateCalculationDisplay(totalAssets, totalLiabilities, netWorth, zakatAmount, zakatStatus) {
+                document.getElementById('total-assets').textContent = this.formatCurrency(totalAssets);
+                document.getElementById('total-liabilities').textContent = this.formatCurrency(totalLiabilities);
+                document.getElementById('net-worth').textContent = this.formatCurrency(netWorth);
+                document.getElementById('zakat-amount').textContent = this.formatCurrency(zakatAmount);
+                document.getElementById('zakat-status').textContent = zakatStatus;
+
+                // Animate the result
+                if (typeof anime !== 'undefined') {
+                    anime({
+                        targets: '.zakat-result',
+                        scale: [0.95, 1],
+                        duration: 300,
+                        easing: 'easeOutQuad'
+                    });
+                }
+            }
+
+            formatCurrency(amount) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(amount);
+            }
+
+            saveCalculation() {
+                const calculation = {
+                    date: new Date().toISOString(),
+                    assets: this.assets,
+                    liabilities: this.liabilities,
+                    goldPrice: this.goldPrice,
+                    silverPrice: this.silverPrice
+                };
+
+                const savedCalculations = JSON.parse(localStorage.getItem('zakat-calculations') || '[]');
+                savedCalculations.unshift(calculation);
+                
+                // Keep only last 10 calculations
+                if (savedCalculations.length > 10) {
+                    savedCalculations.splice(10);
+                }
+
+                localStorage.setItem('zakat-calculations', JSON.stringify(savedCalculations));
+                this.showToast('Calculation saved successfully!');
+            }
+
+            exportPDF() {
+                // In a real app, this would generate and download a PDF
+                this.showToast('PDF export feature coming soon!');
+            }
+
+            resetForm() {
+                // Clear all inputs
+                const inputs = document.querySelectorAll('input[type="number"]');
+                inputs.forEach(input => {
+                    input.value = '';
+                });
+
+                // Reset to default values
+                document.getElementById('gold-price').value = '60';
+                document.getElementById('silver-price').value = '0.70';
+
+                // Reset internal state
+                this.assets = {
+                    cashHand: 0, bankAccounts: 0, savings: 0,
+                    goldGrams: 0, silverGrams: 0,
+                    stocks: 0, businessAssets: 0, receivables: 0,
+                    propertyInvestment: 0, otherAssets: 0
+                };
+                
+                this.liabilities = {
+                    debts: 0, expenses: 0, otherLiabilities: 0
+                };
+
+                this.calculateZakat();
+                this.showToast('Form reset successfully!');
+            }
+
+            showZakatGuide() {
+                // In a real app, this would show a detailed guide
+                this.showToast('Zakat guide feature coming soon!');
+            }
+
+            loadSavedData() {
+                const saved = localStorage.getItem('zakat-latest-calculation');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    
+                    // Populate form with saved data
+                    Object.entries(data.assets).forEach(([key, value]) => {
+                        const inputId = this.getAssetInputId(key);
+                        const input = document.getElementById(inputId);
+                        if (input) input.value = value || '';
+                    });
+                    
+                    Object.entries(data.liabilities).forEach(([key, value]) => {
+                        const inputId = this.getLiabilityInputId(key);
+                        const input = document.getElementById(inputId);
+                        if (input) input.value = value || '';
+                    });
+
+                    this.updateAssets();
+                    this.updateLiabilities();
+                    this.calculateZakat();
+                }
+            }
+
+            getAssetInputId(key) {
+                const mapping = {
+                    cashHand: 'cash-hand',
+                    bankAccounts: 'bank-accounts',
+                    savings: 'savings',
+                    goldGrams: 'gold-grams',
+                    silverGrams: 'silver-grams',
+                    stocks: 'stocks',
+                    businessAssets: 'business-assets',
+                    receivables: 'receivables',
+                    propertyInvestment: 'property-investment',
+                    otherAssets: 'other-assets'
+                };
+                return mapping[key];
+            }
+
+            getLiabilityInputId(key) {
+                const mapping = {
+                    debts: 'debts',
+                    expenses: 'expenses',
+                    otherLiabilities: 'other-liabilities'
+                };
+                return mapping[key];
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-4 left-4 right-4 bg-islamic-500 text-white p-3 rounded-lg shadow-lg z-50 text-center';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 3000);
+            }
+        }
+
+        // Initialize zakat calculator
+        document.addEventListener('DOMContentLoaded', () => {
+            new ZakatCalculator();
+        });
+    </script>
+</body>
+</html>

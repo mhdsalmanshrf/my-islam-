@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prayer Times - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item active flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-islamic-500 rounded-lg flex items-center justify-center">
+                    <span class="text-white text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-islamic-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4 pt-6">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-clay-800 mb-2">Prayer Times</h1>
+            <p class="text-clay-600">Today's prayer schedule</p>
+        </header>
+
+        <!-- Current Prayer Highlight -->
+        <section class="mb-8">
+            <div class="prayer-card bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-2xl p-6 shadow-lg border border-islamic-200">
+                <div class="text-center">
+                    <p class="text-islamic-700 text-sm mb-2">Current Prayer</p>
+                    <h2 class="text-2xl font-bold text-islamic-800 mb-2" id="current-prayer">Dhuhr</h2>
+                    <div class="text-3xl font-mono font-bold text-islamic-700 mb-2" id="time-remaining">02:15:30</div>
+                    <p class="text-islamic-600 text-sm" id="current-time">12:45 PM</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer Times List -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Today's Schedule</h2>
+            <div class="space-y-3" id="prayer-times-list">
+                <!-- Prayer times will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- 7-Day Forecast -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">7-Day Prayer Times</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-clay-200">
+                <div class="space-y-3" id="weekly-prayer-times">
+                    <!-- Weekly prayer times will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer Settings -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Settings</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-clay-700">Calculation Method</span>
+                        <select id="calculation-method" class="clay-button">
+                            <option value="mwl">Muslim World League</option>
+                            <option value="isna">ISNA</option>
+                            <option value="egypt">Egyptian</option>
+                            <option value="makkah">Umm Al-Qura</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-clay-700">Juristic Method</span>
+                        <select id="juristic-method" class="clay-button">
+                            <option value="shafi">Shafi, Maliki, Hanbali</option>
+                            <option value="hanafi">Hanafi</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-clay-700">Notifications</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="notifications-toggle" class="sr-only peer">
+                            <div class="w-11 h-6 bg-clay-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-islamic-500"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer Reminders -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Prayer Reminders</h2>
+            <div class="space-y-3">
+                <div class="prayer-time-row">
+                    <div class="flex items-center">
+                        <span class="text-lg mr-3">🌅</span>
+                        <div>
+                            <p class="font-semibold text-clay-800">Before Fajr</p>
+                            <p class="text-sm text-clay-600">Recite morning adhkar</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-9 h-5 bg-clay-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-islamic-500"></div>
+                    </label>
+                </div>
+                <div class="prayer-time-row">
+                    <div class="flex items-center">
+                        <span class="text-lg mr-3">🌙</span>
+                        <div>
+                            <p class="font-semibold text-clay-800">After Maghrib</p>
+                            <p class="text-sm text-clay-600">Recite evening adhkar</p>
+                        </div>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" class="sr-only peer" checked>
+                        <div class="w-9 h-5 bg-clay-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-islamic-500"></div>
+                    </label>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        // Prayer Times Page Specific JavaScript
+        class PrayerTimesPage {
+            constructor() {
+                this.prayerNames = {
+                    fajr: { name: 'Fajr', icon: '🌅' },
+                    sunrise: { name: 'Sunrise', icon: '☀️' },
+                    dhuhr: { name: 'Dhuhr', icon: '☀️' },
+                    asr: { name: 'Asr', icon: '🌤️' },
+                    maghrib: { name: 'Maghrib', icon: '🌅' },
+                    isha: { name: 'Isha', icon: '🌙' }
+                };
+                this.init();
+            }
+
+            init() {
+                this.generatePrayerTimesList();
+                this.generateWeeklyPrayerTimes();
+                this.setupSettings();
+                this.updateCurrentPrayer();
+                setInterval(() => this.updateCurrentPrayer(), 60000); // Update every minute
+            }
+
+            generatePrayerTimesList() {
+                const container = document.getElementById('prayer-times-list');
+                if (!container) return;
+
+                const now = new Date();
+                const currentPrayer = this.getCurrentPrayer();
+
+                Object.entries(this.prayerNames).forEach(([key, prayer]) => {
+                    const time = this.getPrayerTime(key);
+                    const isCurrent = key === currentPrayer;
+                    
+                    const prayerRow = document.createElement('div');
+                    prayerRow.className = `prayer-time-row ${isCurrent ? 'current' : ''}`;
+                    prayerRow.innerHTML = `
+                        <div class="flex items-center">
+                            <span class="text-2xl mr-4">${prayer.icon}</span>
+                            <div>
+                                <p class="font-semibold text-clay-800 text-lg">${prayer.name}</p>
+                                <p class="text-sm text-clay-600">${isCurrent ? 'Current prayer' : 'Upcoming'}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-clay-800 text-xl">${this.formatTime(time)}</p>
+                            <p class="text-sm text-clay-600">${time.toLocaleDateString('en-US', { weekday: 'short' })}</p>
+                        </div>
+                    `;
+                    
+                    container.appendChild(prayerRow);
+                });
+            }
+
+            generateWeeklyPrayerTimes() {
+                const container = document.getElementById('weekly-prayer-times');
+                if (!container) return;
+
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date();
+                    date.setDate(date.getDate() + i);
+                    
+                    const dayRow = document.createElement('div');
+                    dayRow.className = 'flex justify-between items-center py-2 border-b border-clay-200 last:border-b-0';
+                    dayRow.innerHTML = `
+                        <div>
+                            <p class="font-semibold text-clay-800">${date.toLocaleDateString('en-US', { weekday: 'long' })}</p>
+                            <p class="text-sm text-clay-600">${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-semibold text-clay-800">${this.getMainPrayerTime(date)}</p>
+                            <p class="text-xs text-clay-600">Fajr • Dhuhr • Asr • Maghrib • Isha</p>
+                        </div>
+                    `;
+                    
+                    container.appendChild(dayRow);
+                }
+            }
+
+            getPrayerTime(prayer) {
+                const now = new Date();
+                const baseTimes = {
+                    fajr: { hour: 5, minute: 30 },
+                    sunrise: { hour: 6, minute: 45 },
+                    dhuhr: { hour: 12, minute: 45 },
+                    asr: { hour: 15, minute: 30 },
+                    maghrib: { hour: 18, minute: 45 },
+                    isha: { hour: 20, minute: 0 }
+                };
+
+                const time = baseTimes[prayer];
+                const prayerTime = new Date(now);
+                prayerTime.setHours(time.hour, time.minute, 0, 0);
+                
+                return prayerTime;
+            }
+
+            getCurrentPrayer() {
+                const now = new Date();
+                const prayers = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'];
+                
+                for (let i = 0; i < prayers.length - 1; i++) {
+                    const currentTime = this.getPrayerTime(prayers[i]);
+                    const nextTime = this.getPrayerTime(prayers[i + 1]);
+                    
+                    if (now >= currentTime && now < nextTime) {
+                        return prayers[i];
+                    }
+                }
+                
+                return 'isha'; // Default to Isha if after Isha time
+            }
+
+            getMainPrayerTime(date) {
+                const dhuhr = new Date(date);
+                dhuhr.setHours(12, 45, 0, 0);
+                return this.formatTime(dhuhr);
+            }
+
+            updateCurrentPrayer() {
+                const currentPrayer = this.getCurrentPrayer();
+                const currentPrayerElement = document.getElementById('current-prayer');
+                const timeRemainingElement = document.getElementById('time-remaining');
+                const currentTimeElement = document.getElementById('current-time');
+
+                if (currentPrayerElement) {
+                    currentPrayerElement.textContent = this.prayerNames[currentPrayer].name;
+                }
+
+                if (timeRemainingElement) {
+                    const nextPrayer = this.getNextPrayer();
+                    const timeRemaining = this.getTimeUntilNextPrayer();
+                    timeRemainingElement.textContent = timeRemaining;
+                }
+
+                if (currentTimeElement) {
+                    const prayerTime = this.getPrayerTime(currentPrayer);
+                    currentTimeElement.textContent = this.formatTime(prayerTime);
+                }
+            }
+
+            getNextPrayer() {
+                const prayers = ['fajr', 'sunrise', 'dhuhr', 'asr', 'maghrib', 'isha'];
+                const currentPrayer = this.getCurrentPrayer();
+                const currentIndex = prayers.indexOf(currentPrayer);
+                
+                if (currentIndex < prayers.length - 1) {
+                    return prayers[currentIndex + 1];
+                }
+                
+                return 'fajr'; // Next day's Fajr
+            }
+
+            getTimeUntilNextPrayer() {
+                const now = new Date();
+                const nextPrayer = this.getNextPrayer();
+                const nextPrayerTime = this.getPrayerTime(nextPrayer);
+                
+                if (nextPrayer === 'fajr' && this.getCurrentPrayer() === 'isha') {
+                    // If next prayer is tomorrow's Fajr
+                    nextPrayerTime.setDate(nextPrayerTime.getDate() + 1);
+                }
+                
+                const timeDiff = nextPrayerTime - now;
+                const hours = Math.floor(timeDiff / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+                
+                return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+
+            setupSettings() {
+                const methodSelect = document.getElementById('calculation-method');
+                const juristicSelect = document.getElementById('juristic-method');
+                const notificationsToggle = document.getElementById('notifications-toggle');
+
+                // Load saved settings
+                const savedMethod = localStorage.getItem('prayer-calculation-method') || 'mwl';
+                const savedJuristic = localStorage.getItem('prayer-juristic-method') || 'shafi';
+                const savedNotifications = localStorage.getItem('prayer-notifications') === 'true';
+
+                if (methodSelect) methodSelect.value = savedMethod;
+                if (juristicSelect) juristicSelect.value = savedJuristic;
+                if (notificationsToggle) notificationsToggle.checked = savedNotifications;
+
+                // Save settings on change
+                if (methodSelect) {
+                    methodSelect.addEventListener('change', (e) => {
+                        localStorage.setItem('prayer-calculation-method', e.target.value);
+                        this.recalculatePrayerTimes();
+                    });
+                }
+
+                if (juristicSelect) {
+                    juristicSelect.addEventListener('change', (e) => {
+                        localStorage.setItem('prayer-juristic-method', e.target.value);
+                        this.recalculatePrayerTimes();
+                    });
+                }
+
+                if (notificationsToggle) {
+                    notificationsToggle.addEventListener('change', (e) => {
+                        localStorage.setItem('prayer-notifications', e.target.checked);
+                        this.setupNotifications(e.target.checked);
+                    });
+                }
+            }
+
+            recalculatePrayerTimes() {
+                // Clear existing prayer times
+                const container = document.getElementById('prayer-times-list');
+                if (container) {
+                    container.innerHTML = '';
+                    this.generatePrayerTimesList();
+                }
+            }
+
+            setupNotifications(enabled) {
+                if (enabled && 'Notification' in window) {
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            console.log('Prayer notifications enabled');
+                        }
+                    });
+                }
+            }
+
+            formatTime(date) {
+                return date.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                });
+            }
+        }
+
+        // Initialize prayer times page
+        document.addEventListener('DOMContentLoaded', () => {
+            new PrayerTimesPage();
+        });
+    </script>
+</body>
+</html>

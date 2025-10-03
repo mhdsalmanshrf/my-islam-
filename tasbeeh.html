@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasbeeh Counter - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4 pt-6">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-clay-800 mb-2">Tasbeeh Counter</h1>
+            <p class="text-clay-600">Digital dhikr counter</p>
+        </header>
+
+        <!-- Current Dhikr -->
+        <section class="mb-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200 text-center">
+                <h2 class="text-xl font-semibold text-clay-800 mb-4">Current Dhikr</h2>
+                <div class="space-y-3">
+                    <div class="font-arabic text-2xl text-islamic-700" dir="rtl" id="current-dhikr-arabic">
+                        سُبْحَانَ اللَّهِ
+                    </div>
+                    <div class="text-clay-600 italic" id="current-dhikr-transliteration">
+                        SubhanAllah
+                    </div>
+                    <div class="text-clay-700" id="current-dhikr-translation">
+                        Glory be to Allah
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Counter Circle -->
+        <section class="mb-8">
+            <div class="tasbeeh-circle" id="tasbeeh-circle">
+                <div class="text-center">
+                    <div class="tasbeeh-count" id="current-count">0</div>
+                    <div class="text-white text-sm mt-2" id="target-count">/ 33</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Preset Buttons -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Dhikr Presets</h2>
+            <div class="grid grid-cols-2 gap-3">
+                <button class="preset-btn clay-button p-4 text-center active" data-dhikr="subhanallah" data-target="33">
+                    <div class="font-arabic text-lg mb-1" dir="rtl">سُبْحَانَ اللَّهِ</div>
+                    <div class="text-sm text-clay-600">SubhanAllah</div>
+                    <div class="text-xs text-islamic-600 mt-1">33 times</div>
+                </button>
+                <button class="preset-btn clay-button p-4 text-center" data-dhikr="alhamdulillah" data-target="33">
+                    <div class="font-arabic text-lg mb-1" dir="rtl">الْحَمْدُ لِلَّهِ</div>
+                    <div class="text-sm text-clay-600">Alhamdulillah</div>
+                    <div class="text-xs text-islamic-600 mt-1">33 times</div>
+                </button>
+                <button class="preset-btn clay-button p-4 text-center" data-dhikr="allahuakbar" data-target="33">
+                    <div class="font-arabic text-lg mb-1" dir="rtl">اللَّهُ أَكْبَرُ</div>
+                    <div class="text-sm text-clay-600">Allahu Akbar</div>
+                    <div class="text-xs text-islamic-600 mt-1">33 times</div>
+                </button>
+                <button class="preset-btn clay-button p-4 text-center" data-dhikr="laillaha" data-target="99">
+                    <div class="font-arabic text-lg mb-1" dir="rtl">لَا إِلَٰهَ إِلَّا اللَّهُ</div>
+                    <div class="text-sm text-clay-600">La ilaha illa Allah</div>
+                    <div class="text-xs text-islamic-600 mt-1">99 times</div>
+                </button>
+            </div>
+        </section>
+
+        <!-- Counter Controls -->
+        <section class="mb-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <h2 class="text-xl font-semibold text-clay-800 mb-4">Controls</h2>
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="reset-btn" class="clay-button py-3">
+                        <span class="text-lg mr-2">🔄</span>
+                        Reset
+                    </button>
+                    <button id="vibration-btn" class="clay-button py-3">
+                        <span class="text-lg mr-2">📳</span>
+                        Vibration: ON
+                    </button>
+                    <button id="sound-btn" class="clay-button py-3">
+                        <span class="text-lg mr-2">🔊</span>
+                        Sound: ON
+                    </button>
+                    <button id="auto-btn" class="clay-button py-3">
+                        <span class="text-lg mr-2">⚡</span>
+                        Auto: OFF
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Session Stats -->
+        <section class="mb-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <h2 class="text-xl font-semibold text-clay-800 mb-4">Today's Session</h2>
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <div class="text-2xl font-bold text-islamic-600" id="total-count">0</div>
+                        <div class="text-sm text-clay-600">Total</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-islamic-600" id="sessions-count">0</div>
+                        <div class="text-sm text-clay-600">Sessions</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-islamic-600" id="time-spent">0m</div>
+                        <div class="text-sm text-clay-600">Time</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- History -->
+        <section class="mb-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-clay-800">Recent Sessions</h2>
+                    <button id="clear-history-btn" class="text-sm text-clay-500 hover:text-clay-700">Clear</button>
+                </div>
+                <div id="history-list" class="space-y-2">
+                    <!-- History items will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        // Tasbeeh Counter Page Specific JavaScript
+        class TasbeehCounter {
+            constructor() {
+                this.currentCount = 0;
+                this.targetCount = 33;
+                this.currentDhikr = 'subhanallah';
+                this.vibrationEnabled = true;
+                this.soundEnabled = true;
+                this.autoMode = false;
+                this.sessionStartTime = null;
+                this.totalCount = 0;
+                this.sessionsCount = 0;
+                
+                this.dhikrData = {
+                    subhanallah: {
+                        arabic: 'سُبْحَانَ اللَّهِ',
+                        transliteration: 'SubhanAllah',
+                        translation: 'Glory be to Allah'
+                    },
+                    alhamdulillah: {
+                        arabic: 'الْحَمْدُ لِلَّهِ',
+                        transliteration: 'Alhamdulillah',
+                        translation: 'Praise be to Allah'
+                    },
+                    allahuakbar: {
+                        arabic: 'اللَّهُ أَكْبَرُ',
+                        transliteration: 'Allahu Akbar',
+                        translation: 'Allah is the Greatest'
+                    },
+                    laillaha: {
+                        arabic: 'لَا إِلَٰهَ إِلَّا اللَّهُ',
+                        transliteration: 'La ilaha illa Allah',
+                        translation: 'There is no god but Allah'
+                    }
+                };
+                
+                this.history = this.loadHistory();
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadSettings();
+                this.updateDisplay();
+                this.updateStats();
+                this.displayHistory();
+            }
+
+            setupEventListeners() {
+                // Counter circle
+                const counterCircle = document.getElementById('tasbeeh-circle');
+                counterCircle.addEventListener('click', () => {
+                    this.incrementCounter();
+                });
+
+                // Preset buttons
+                const presetButtons = document.querySelectorAll('.preset-btn');
+                presetButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const dhikr = e.currentTarget.dataset.dhikr;
+                        const target = parseInt(e.currentTarget.dataset.target);
+                        this.setDhikr(dhikr, target);
+                        this.updateActivePreset(e.currentTarget);
+                    });
+                });
+
+                // Control buttons
+                document.getElementById('reset-btn')?.addEventListener('click', () => {
+                    this.resetCounter();
+                });
+
+                document.getElementById('vibration-btn')?.addEventListener('click', () => {
+                    this.toggleVibration();
+                });
+
+                document.getElementById('sound-btn')?.addEventListener('click', () => {
+                    this.toggleSound();
+                });
+
+                document.getElementById('auto-btn')?.addEventListener('click', () => {
+                    this.toggleAutoMode();
+                });
+
+                document.getElementById('clear-history-btn')?.addEventListener('click', () => {
+                    this.clearHistory();
+                });
+            }
+
+            incrementCounter() {
+                this.currentCount++;
+                this.totalCount++;
+                
+                // Haptic feedback
+                if (this.vibrationEnabled && navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+
+                // Sound feedback
+                if (this.soundEnabled) {
+                    this.playClickSound();
+                }
+
+                // Visual feedback
+                this.animateCounter();
+                
+                // Check if target reached
+                if (this.currentCount >= this.targetCount) {
+                    this.completeSession();
+                }
+
+                this.updateDisplay();
+                this.saveSettings();
+            }
+
+            animateCounter() {
+                const counter = document.getElementById('tasbeeh-circle');
+                
+                if (typeof anime !== 'undefined') {
+                    anime({
+                        targets: counter,
+                        scale: [1, 1.1, 1],
+                        duration: 200,
+                        easing: 'easeOutQuad'
+                    });
+                }
+
+                // Add ripple effect
+                this.createRippleEffect();
+            }
+
+            createRippleEffect() {
+                const counter = document.getElementById('tasbeeh-circle');
+                const ripple = document.createElement('div');
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                    top: 0;
+                    left: 0;
+                `;
+                
+                counter.style.position = 'relative';
+                counter.style.overflow = 'hidden';
+                counter.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            }
+
+            playClickSound() {
+                // Create a simple beep sound using Web Audio API
+                try {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.value = 800;
+                    oscillator.type = 'sine';
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                } catch (e) {
+                    console.log('Audio not supported');
+                }
+            }
+
+            setDhikr(dhikr, target) {
+                this.currentDhikr = dhikr;
+                this.targetCount = target;
+                this.currentCount = 0;
+                this.sessionStartTime = new Date();
+                
+                this.updateDhikrDisplay();
+                this.updateDisplay();
+                this.saveSettings();
+            }
+
+            updateActivePreset(activeButton) {
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                activeButton.classList.add('active');
+            }
+
+            resetCounter() {
+                this.currentCount = 0;
+                this.sessionStartTime = new Date();
+                this.updateDisplay();
+                this.saveSettings();
+            }
+
+            toggleVibration() {
+                this.vibrationEnabled = !this.vibrationEnabled;
+                this.updateControlButtons();
+                this.saveSettings();
+            }
+
+            toggleSound() {
+                this.soundEnabled = !this.soundEnabled;
+                this.updateControlButtons();
+                this.saveSettings();
+            }
+
+            toggleAutoMode() {
+                this.autoMode = !this.autoMode;
+                this.updateControlButtons();
+                
+                if (this.autoMode) {
+                    this.startAutoMode();
+                } else {
+                    this.stopAutoMode();
+                }
+                
+                this.saveSettings();
+            }
+
+            startAutoMode() {
+                this.autoInterval = setInterval(() => {
+                    this.incrementCounter();
+                }, 1000); // Auto-increment every second
+            }
+
+            stopAutoMode() {
+                if (this.autoInterval) {
+                    clearInterval(this.autoInterval);
+                    this.autoInterval = null;
+                }
+            }
+
+            completeSession() {
+                this.sessionsCount++;
+                
+                // Calculate session time
+                const sessionTime = this.sessionStartTime ? 
+                    Math.round((new Date() - this.sessionStartTime) / 1000 / 60) : 0;
+                
+                // Add to history
+                this.addToHistory({
+                    dhikr: this.currentDhikr,
+                    count: this.targetCount,
+                    time: sessionTime,
+                    date: new Date().toISOString()
+                });
+                
+                // Completion feedback
+                this.showCompletionFeedback();
+                
+                // Reset for next session
+                this.currentCount = 0;
+                this.sessionStartTime = new Date();
+                
+                this.updateDisplay();
+                this.updateStats();
+                this.displayHistory();
+            }
+
+            showCompletionFeedback() {
+                if (this.vibrationEnabled && navigator.vibrate) {
+                    navigator.vibrate([200, 100, 200, 100, 200]);
+                }
+
+                // Show completion message
+                const message = document.createElement('div');
+                message.className = 'fixed top-4 left-4 right-4 bg-islamic-500 text-white p-4 rounded-lg shadow-lg z-50 text-center';
+                message.innerHTML = `
+                    <div class="text-lg font-semibold mb-1">Session Complete! 🎉</div>
+                    <div class="text-sm">${this.dhikrData[this.currentDhikr].translation}</div>
+                `;
+                document.body.appendChild(message);
+
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 3000);
+            }
+
+            addToHistory(session) {
+                this.history.unshift(session);
+                
+                // Keep only last 10 sessions
+                if (this.history.length > 10) {
+                    this.history = this.history.slice(0, 10);
+                }
+                
+                this.saveHistory();
+            }
+
+            clearHistory() {
+                this.history = [];
+                this.saveHistory();
+                this.displayHistory();
+            }
+
+            updateDisplay() {
+                const currentCountElement = document.getElementById('current-count');
+                const targetCountElement = document.getElementById('target-count');
+                
+                if (currentCountElement) {
+                    currentCountElement.textContent = this.currentCount;
+                }
+                
+                if (targetCountElement) {
+                    targetCountElement.textContent = `/ ${this.targetCount}`;
+                }
+            }
+
+            updateDhikrDisplay() {
+                const dhikr = this.dhikrData[this.currentDhikr];
+                
+                document.getElementById('current-dhikr-arabic').textContent = dhikr.arabic;
+                document.getElementById('current-dhikr-transliteration').textContent = dhikr.transliteration;
+                document.getElementById('current-dhikr-translation').textContent = dhikr.translation;
+            }
+
+            updateControlButtons() {
+                const vibrationBtn = document.getElementById('vibration-btn');
+                const soundBtn = document.getElementById('sound-btn');
+                const autoBtn = document.getElementById('auto-btn');
+
+                if (vibrationBtn) {
+                    vibrationBtn.innerHTML = `
+                        <span class="text-lg mr-2">📳</span>
+                        Vibration: ${this.vibrationEnabled ? 'ON' : 'OFF'}
+                    `;
+                }
+
+                if (soundBtn) {
+                    soundBtn.innerHTML = `
+                        <span class="text-lg mr-2">${this.soundEnabled ? '🔊' : '🔇'}</span>
+                        Sound: ${this.soundEnabled ? 'ON' : 'OFF'}
+                    `;
+                }
+
+                if (autoBtn) {
+                    autoBtn.innerHTML = `
+                        <span class="text-lg mr-2">⚡</span>
+                        Auto: ${this.autoMode ? 'ON' : 'OFF'}
+                    `;
+                    autoBtn.style.background = this.autoMode ? 'rgba(45, 157, 90, 0.1)' : '';
+                }
+            }
+
+            updateStats() {
+                document.getElementById('total-count').textContent = this.totalCount.toLocaleString();
+                document.getElementById('sessions-count').textContent = this.sessionsCount;
+                
+                const totalTime = this.history.reduce((sum, session) => sum + (session.time || 0), 0);
+                document.getElementById('time-spent').textContent = `${totalTime}m`;
+            }
+
+            displayHistory() {
+                const historyList = document.getElementById('history-list');
+                if (!historyList) return;
+
+                if (this.history.length === 0) {
+                    historyList.innerHTML = '<p class="text-center text-clay-500 py-4">No sessions yet</p>';
+                    return;
+                }
+
+                historyList.innerHTML = '';
+
+                this.history.forEach(session => {
+                    const dhikr = this.dhikrData[session.dhikr];
+                    const timeAgo = this.getTimeAgo(new Date(session.date));
+                    
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'flex items-center justify-between py-2 border-b border-clay-200 last:border-b-0';
+                    historyItem.innerHTML = `
+                        <div>
+                            <div class="font-semibold text-clay-800">${dhikr.transliteration}</div>
+                            <div class="text-sm text-clay-600">${session.count} times • ${session.time}min</div>
+                        </div>
+                        <div class="text-xs text-clay-500">${timeAgo}</div>
+                    `;
+                    
+                    historyList.appendChild(historyItem);
+                });
+            }
+
+            getTimeAgo(date) {
+                const now = new Date();
+                const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+                
+                if (diffInMinutes < 1) return 'Just now';
+                if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+                
+                const diffInHours = Math.floor(diffInMinutes / 60);
+                if (diffInHours < 24) return `${diffInHours}h ago`;
+                
+                const diffInDays = Math.floor(diffInHours / 24);
+                return `${diffInDays}d ago`;
+            }
+
+            loadSettings() {
+                const settings = localStorage.getItem('tasbeeh-settings');
+                if (settings) {
+                    const data = JSON.parse(settings);
+                    this.vibrationEnabled = data.vibrationEnabled !== false;
+                    this.soundEnabled = data.soundEnabled !== false;
+                    this.totalCount = data.totalCount || 0;
+                    this.sessionsCount = data.sessionsCount || 0;
+                }
+                
+                this.updateControlButtons();
+            }
+
+            saveSettings() {
+                const settings = {
+                    currentDhikr: this.currentDhikr,
+                    targetCount: this.targetCount,
+                    vibrationEnabled: this.vibrationEnabled,
+                    soundEnabled: this.soundEnabled,
+                    autoMode: this.autoMode,
+                    totalCount: this.totalCount,
+                    sessionsCount: this.sessionsCount
+                };
+                
+                localStorage.setItem('tasbeeh-settings', JSON.stringify(settings));
+            }
+
+            loadHistory() {
+                const history = localStorage.getItem('tasbeeh-history');
+                return history ? JSON.parse(history) : [];
+            }
+
+            saveHistory() {
+                localStorage.setItem('tasbeeh-history', JSON.stringify(this.history));
+            }
+        }
+
+        // Add ripple animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize tasbeeh counter
+        document.addEventListener('DOMContentLoaded', () => {
+            new TasbeehCounter();
+        });
+    </script>
+</body>
+</html>

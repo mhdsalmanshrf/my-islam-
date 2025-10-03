@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4 pt-6">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-clay-800 mb-2">Settings</h1>
+            <p class="text-clay-600">Customize your MyIslam experience</p>
+        </header>
+
+        <!-- General Settings -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">General</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Language</p>
+                            <p class="text-sm text-clay-600">Choose your preferred language</p>
+                        </div>
+                        <select id="language-select" class="clay-button">
+                            <option value="en">English</option>
+                            <option value="ar">العربية</option>
+                            <option value="fr">Français</option>
+                            <option value="ur">اردو</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Theme</p>
+                            <p class="text-sm text-clay-600">Light or dark mode</p>
+                        </div>
+                        <select id="theme-select" class="clay-button">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Notifications</p>
+                            <p class="text-sm text-clay-600">Prayer time reminders</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="notifications-toggle" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-clay-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-islamic-500"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer Settings -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Prayer Times</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Calculation Method</p>
+                            <p class="text-sm text-clay-600">Method for calculating prayer times</p>
+                        </div>
+                        <select id="calculation-method" class="clay-button">
+                            <option value="mwl">Muslim World League</option>
+                            <option value="isna">ISNA</option>
+                            <option value="egypt">Egyptian</option>
+                            <option value="makkah">Umm Al-Qura</option>
+                            <option value="karachi">Karachi</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Juristic Method</p>
+                            <p class="text-sm text-clay-600">Asr calculation method</p>
+                        </div>
+                        <select id="juristic-method" class="clay-button">
+                            <option value="shafi">Shafi, Maliki, Hanbali</option>
+                            <option value="hanafi">Hanafi</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Time Format</p>
+                            <p class="text-sm text-clay-600">12-hour or 24-hour format</p>
+                        </div>
+                        <select id="time-format" class="clay-button">
+                            <option value="12">12-hour</option>
+                            <option value="24">24-hour</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quran Reader Settings -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Quran Reader</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Default Translation</p>
+                            <p class="text-sm text-clay-600">Preferred English translation</p>
+                        </div>
+                        <select id="translation-select" class="clay-button">
+                            <option value="sahih">Sahih International</option>
+                            <option value="pickthall">Pickthall</option>
+                            <option value="yusufali">Yusuf Ali</option>
+                            <option value="shakir">Shakir</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Arabic Font Size</p>
+                            <p class="text-sm text-clay-600">Size of Arabic text</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="range" id="font-size-slider" min="16" max="32" value="24" class="w-20">
+                            <span class="text-sm text-clay-600 w-8" id="font-size-display">24px</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Auto-play Audio</p>
+                            <p class="text-sm text-clay-600">Play next verse automatically</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="auto-play-toggle" class="sr-only peer">
+                            <div class="w-11 h-6 bg-clay-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-islamic-500"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location Settings -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Location</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Current Location</p>
+                            <p class="text-sm text-clay-600" id="current-location">New York, NY, USA</p>
+                        </div>
+                        <button id="update-location" class="clay-button">
+                            Update
+                        </button>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Auto-detect Location</p>
+                            <p class="text-sm text-clay-600">Use GPS for accurate prayer times</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="auto-location-toggle" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-clay-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-islamic-500"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data & Privacy -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Data & Privacy</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Backup Data</p>
+                            <p class="text-sm text-clay-600">Save your data to cloud</p>
+                        </div>
+                        <button id="backup-data" class="clay-button">
+                            Backup
+                        </button>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Export Data</p>
+                            <p class="text-sm text-clay-600">Download your data as JSON</p>
+                        </div>
+                        <button id="export-data" class="clay-button">
+                            Export
+                        </button>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-semibold text-clay-800">Clear All Data</p>
+                            <p class="text-sm text-clay-600">Reset app to default state</p>
+                        </div>
+                        <button id="clear-data" class="clay-button bg-red-100 text-red-700">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">About</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div class="text-center">
+                        <div class="text-2xl mb-2">🕌</div>
+                        <h3 class="text-lg font-semibold text-clay-800">MyIslam</h3>
+                        <p class="text-sm text-clay-600">Version 1.0.0</p>
+                    </div>
+                    
+                    <div class="border-t border-clay-200 pt-4">
+                        <div class="space-y-3">
+                            <button id="rate-app" class="w-full clay-button text-left flex items-center justify-between">
+                                <span>Rate MyIslam</span>
+                                <span class="text-clay-400">⭐</span>
+                            </button>
+                            
+                            <button id="share-app" class="w-full clay-button text-left flex items-center justify-between">
+                                <span>Share with Friends</span>
+                                <span class="text-clay-400">📤</span>
+                            </button>
+                            
+                            <button id="privacy-policy" class="w-full clay-button text-left flex items-center justify-between">
+                                <span>Privacy Policy</span>
+                                <span class="text-clay-400">🔒</span>
+                            </button>
+                            
+                            <button id="terms-service" class="w-full clay-button text-left flex items-center justify-between">
+                                <span>Terms of Service</span>
+                                <span class="text-clay-400">📄</span>
+                            </button>
+                            
+                            <button id="contact-us" class="w-full clay-button text-left flex items-center justify-between">
+                                <span>Contact Us</span>
+                                <span class="text-clay-400">📧</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Attribution -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-2xl p-6 shadow-lg border border-islamic-200">
+                <h2 class="text-xl font-semibold text-islamic-800 mb-4">Attributions</h2>
+                <div class="space-y-3 text-islamic-700 text-sm">
+                    <p>
+                        <strong>Quran Text:</strong> Tanzil.net - Uthmani Script. Used with attribution as per license requirements.
+                    </p>
+                    <p>
+                        <strong>Translations:</strong> Sahih International, Pickthall, Yusuf Ali. Used with attribution.
+                    </p>
+                    <p>
+                        <strong>Duas & Azkar:</strong> Hisnul Muslim, MuslimKit Azkar collection. Used with attribution.
+                    </p>
+                    <p>
+                        <strong>Fonts:</strong> KFGQPC Uthmanic Script HAFS, Noto Naskh Arabic. Used under respective licenses.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        // Settings Page Specific JavaScript
+        class SettingsPage {
+            constructor() {
+                this.settings = this.loadSettings();
+                this.init();
+            }
+
+            init() {
+                this.populateSettings();
+                this.setupEventListeners();
+                this.updateFontSizeDisplay();
+            }
+
+            loadSettings() {
+                const defaultSettings = {
+                    language: 'en',
+                    theme: 'light',
+                    notifications: true,
+                    calculationMethod: 'mwl',
+                    juristicMethod: 'shafi',
+                    timeFormat: '12',
+                    defaultTranslation: 'sahih',
+                    fontSize: 24,
+                    autoPlay: false,
+                    autoLocation: true
+                };
+
+                const saved = localStorage.getItem('myislam-settings');
+                return saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
+            }
+
+            saveSettings() {
+                localStorage.setItem('myislam-settings', JSON.stringify(this.settings));
+            }
+
+            populateSettings() {
+                // Populate form controls with current settings
+                document.getElementById('language-select').value = this.settings.language;
+                document.getElementById('theme-select').value = this.settings.theme;
+                document.getElementById('notifications-toggle').checked = this.settings.notifications;
+                document.getElementById('calculation-method').value = this.settings.calculationMethod;
+                document.getElementById('juristic-method').value = this.settings.juristicMethod;
+                document.getElementById('time-format').value = this.settings.timeFormat;
+                document.getElementById('translation-select').value = this.settings.defaultTranslation;
+                document.getElementById('font-size-slider').value = this.settings.fontSize;
+                document.getElementById('auto-play-toggle').checked = this.settings.autoPlay;
+                document.getElementById('auto-location-toggle').checked = this.settings.autoLocation;
+            }
+
+            setupEventListeners() {
+                // Language selection
+                document.getElementById('language-select')?.addEventListener('change', (e) => {
+                    this.settings.language = e.target.value;
+                    this.saveSettings();
+                    this.showToast('Language settings saved');
+                });
+
+                // Theme selection
+                document.getElementById('theme-select')?.addEventListener('change', (e) => {
+                    this.settings.theme = e.target.value;
+                    this.saveSettings();
+                    this.applyTheme(e.target.value);
+                    this.showToast('Theme settings saved');
+                });
+
+                // Notifications toggle
+                document.getElementById('notifications-toggle')?.addEventListener('change', (e) => {
+                    this.settings.notifications = e.target.checked;
+                    this.saveSettings();
+                    this.showToast(`Notifications ${e.target.checked ? 'enabled' : 'disabled'}`);
+                });
+
+                // Prayer settings
+                document.getElementById('calculation-method')?.addEventListener('change', (e) => {
+                    this.settings.calculationMethod = e.target.value;
+                    this.saveSettings();
+                    this.showToast('Prayer calculation method updated');
+                });
+
+                document.getElementById('juristic-method')?.addEventListener('change', (e) => {
+                    this.settings.juristicMethod = e.target.value;
+                    this.saveSettings();
+                    this.showToast('Juristic method updated');
+                });
+
+                document.getElementById('time-format')?.addEventListener('change', (e) => {
+                    this.settings.timeFormat = e.target.value;
+                    this.saveSettings();
+                    this.showToast('Time format updated');
+                });
+
+                // Quran settings
+                document.getElementById('translation-select')?.addEventListener('change', (e) => {
+                    this.settings.defaultTranslation = e.target.value;
+                    this.saveSettings();
+                    this.showToast('Default translation updated');
+                });
+
+                document.getElementById('font-size-slider')?.addEventListener('input', (e) => {
+                    this.settings.fontSize = parseInt(e.target.value);
+                    this.saveSettings();
+                    this.updateFontSizeDisplay();
+                });
+
+                document.getElementById('auto-play-toggle')?.addEventListener('change', (e) => {
+                    this.settings.autoPlay = e.target.checked;
+                    this.saveSettings();
+                    this.showToast(`Auto-play ${e.target.checked ? 'enabled' : 'disabled'}`);
+                });
+
+                // Location settings
+                document.getElementById('update-location')?.addEventListener('click', () => {
+                    this.updateLocation();
+                });
+
+                document.getElementById('auto-location-toggle')?.addEventListener('change', (e) => {
+                    this.settings.autoLocation = e.target.checked;
+                    this.saveSettings();
+                    this.showToast(`Auto-location ${e.target.checked ? 'enabled' : 'disabled'}`);
+                });
+
+                // Data management
+                document.getElementById('backup-data')?.addEventListener('click', () => {
+                    this.backupData();
+                });
+
+                document.getElementById('export-data')?.addEventListener('click', () => {
+                    this.exportData();
+                });
+
+                document.getElementById('clear-data')?.addEventListener('click', () => {
+                    this.clearData();
+                });
+
+                // About section
+                document.getElementById('rate-app')?.addEventListener('click', () => {
+                    this.rateApp();
+                });
+
+                document.getElementById('share-app')?.addEventListener('click', () => {
+                    this.shareApp();
+                });
+
+                document.getElementById('privacy-policy')?.addEventListener('click', () => {
+                    this.showPrivacyPolicy();
+                });
+
+                document.getElementById('terms-service')?.addEventListener('click', () => {
+                    this.showTermsOfService();
+                });
+
+                document.getElementById('contact-us')?.addEventListener('click', () => {
+                    this.contactUs();
+                });
+            }
+
+            updateFontSizeDisplay() {
+                const slider = document.getElementById('font-size-slider');
+                const display = document.getElementById('font-size-display');
+                if (slider && display) {
+                    display.textContent = `${slider.value}px`;
+                }
+            }
+
+            applyTheme(theme) {
+                if (theme === 'dark') {
+                    document.body.classList.add('dark-theme');
+                } else {
+                    document.body.classList.remove('dark-theme');
+                }
+            }
+
+            updateLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            // In a real app, you would reverse geocode these coordinates
+                            const locationText = `${position.coords.latitude.toFixed(4)}, ${position.coords.longitude.toFixed(4)}`;
+                            document.getElementById('current-location').textContent = locationText;
+                            this.showToast('Location updated successfully!');
+                        },
+                        (error) => {
+                            this.showToast('Unable to get your location');
+                        }
+                    );
+                } else {
+                    this.showToast('Geolocation is not supported by this browser');
+                }
+            }
+
+            backupData() {
+                // In a real app, this would backup to cloud storage
+                this.showToast('Backup feature coming soon!');
+            }
+
+            exportData() {
+                const allData = {
+                    settings: this.settings,
+                    prayerHistory: localStorage.getItem('prayer-history'),
+                    quranProgress: localStorage.getItem('quran-progress'),
+                    tasbeehHistory: localStorage.getItem('tasbeeh-history'),
+                    zakatCalculations: localStorage.getItem('zakat-calculations'),
+                    exportDate: new Date().toISOString()
+                };
+
+                const dataStr = JSON.stringify(allData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `myislam-data-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+                this.showToast('Data exported successfully!');
+            }
+
+            clearData() {
+                if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+                    localStorage.clear();
+                    this.showToast('All data cleared successfully!');
+                    
+                    // Reset to defaults
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                }
+            }
+
+            rateApp() {
+                this.showToast('Rate app feature coming soon!');
+            }
+
+            shareApp() {
+                const shareData = {
+                    title: 'MyIslam - Your Islamic Companion',
+                    text: 'Check out MyIslam - a comprehensive Islamic app for prayer times, Quran reading, and more!',
+                    url: window.location.origin
+                };
+
+                if (navigator.share) {
+                    navigator.share(shareData);
+                } else {
+                    navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`).then(() => {
+                        this.showToast('App link copied to clipboard!');
+                    });
+                }
+            }
+
+            showPrivacyPolicy() {
+                this.showToast('Privacy policy feature coming soon!');
+            }
+
+            showTermsOfService() {
+                this.showToast('Terms of service feature coming soon!');
+            }
+
+            contactUs() {
+                this.showToast('Contact us feature coming soon!');
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-4 left-4 right-4 bg-islamic-500 text-white p-3 rounded-lg shadow-lg z-50 text-center';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 3000);
+            }
+        }
+
+        // Initialize settings page
+        document.addEventListener('DOMContentLoaded', () => {
+            new SettingsPage();
+        });
+    </script>
+</body>
+</html>

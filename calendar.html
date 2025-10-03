@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Islamic Calendar - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4 pt-6">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-clay-800 mb-2">Islamic Calendar</h1>
+            <p class="text-clay-600">Hijri and Gregorian dates</p>
+        </header>
+
+        <!-- Current Date Display -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-2xl p-6 shadow-lg border border-islamic-200 text-center">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-sm text-islamic-700 mb-2">Today (Hijri)</div>
+                        <div class="text-2xl font-bold text-islamic-800 font-arabic" dir="rtl" id="hijri-date">
+                            ١٥ ربيع الأول ١٤٤٦
+                        </div>
+                        <div class="text-islamic-600" id="hijri-date-en">
+                            15 Rabi' al-Awwal 1446
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-sm text-islamic-700 mb-2">Today (Gregorian)</div>
+                        <div class="text-2xl font-bold text-islamic-800" id="gregorian-date">
+                            October 3, 2025
+                        </div>
+                        <div class="text-islamic-600" id="gregorian-date-alt">
+                            03/10/2025
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Month Navigation -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-clay-800">Hijri Calendar</h2>
+                <div class="flex space-x-2">
+                    <button id="prev-hijri-month" class="clay-button p-2">
+                        <span class="text-lg">←</span>
+                    </button>
+                    <button id="next-hijri-month" class="clay-button p-2">
+                        <span class="text-lg">→</span>
+                    </button>
+                </div>
+            </div>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="text-center mb-4">
+                    <h3 class="text-lg font-semibold text-clay-800 font-arabic" dir="rtl" id="hijri-month-year">
+                        ربيع الأول ١٤٤٦
+                    </h3>
+                    <p class="text-sm text-clay-600" id="hijri-month-gregorian">
+                        October 2025
+                    </p>
+                </div>
+                <div class="grid grid-cols-7 gap-1 mb-2">
+                    <div class="text-center text-xs text-clay-500 py-2 font-arabic" dir="rtl">الأحد</div>
+                    <div class="text-center text-xs text-clay-500 py-2 font-arabic" dir="rtl">الإثنين</div>
+                    <div class="text-center text-xs text-clay-500 py-2 font-arabic" dir="rtl">الثلاثاء</div>
+                    <div class="text-center text-xs text-clay-500 py-2 font-arabic" dir="rtl">الأربعاء</div>
+                    <div class="text-center text-xs text-clay-500 py-2 font-arabic" dir="rtl">الخميس</div>
+                    <div class="text-center text-xs text-clay-500 py-2 font-arabic" dir="rtl">الجمعة</div>
+                    <div class="text-center text-xs text-clay-500 py-2 font-arabic" dir="rtl">السبت</div>
+                </div>
+                <div class="grid grid-cols-7 gap-1" id="hijri-calendar-grid">
+                    <!-- Hijri calendar days will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Important Dates -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Important Islamic Dates</h2>
+            <div class="space-y-3">
+                <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-clay-800">Muharram 1</h3>
+                            <p class="text-sm text-clay-600">Islamic New Year</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-islamic-600">July 7, 2025</div>
+                            <div class="text-xs text-clay-500">1447 AH</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-clay-800">Rabi' al-Awwal 12</h3>
+                            <p class="text-sm text-clay-600">Birth of Prophet Muhammad ﷺ</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-islamic-600">October 15, 2025</div>
+                            <div class="text-xs text-clay-500">1446 AH</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-clay-800">Ramadan 1</h3>
+                            <p class="text-sm text-clay-600">Start of Ramadan</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-islamic-600">March 1, 2025</div>
+                            <div class="text-xs text-clay-500">1446 AH</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-clay-800">Shawwal 1</h3>
+                            <p class="text-sm text-clay-600">Eid al-Fitr</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-islamic-600">March 31, 2025</div>
+                            <div class="text-xs text-clay-500">1446 AH</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white/80 backdrop-blur-sm rounded-xl p-4 shadow-md border border-clay-200">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="font-semibold text-clay-800">Dhu al-Hijjah 10</h3>
+                            <p class="text-sm text-clay-600">Eid al-Adha</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-islamic-600">June 6, 2025</div>
+                            <div class="text-xs text-clay-500">1446 AH</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Month Information -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-2xl p-6 shadow-lg border border-islamic-200">
+                <h2 class="text-xl font-semibold text-islamic-800 mb-4">About Rabi' al-Awwal</h2>
+                <div class="space-y-3 text-islamic-700 text-sm">
+                    <p>
+                        <strong>Rabi' al-Awwal</strong> is the third month of the Islamic lunar calendar. The name literally means "the first spring" or "the beginning of spring."
+                    </p>
+                    <p>
+                        This month holds special significance for Muslims as it marks the birth of Prophet Muhammad ﷺ. The 12th day of Rabi' al-Awwal is celebrated as Mawlid an-Nabi (the Prophet's birthday) in many Muslim communities.
+                    </p>
+                    <p>
+                        The month is also notable for the Hijrah (migration) of the Prophet Muhammad ﷺ from Mecca to Medina, which occurred on the 1st of Rabi' al-Awwal in some historical accounts.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conversion Tool -->
+        <section class="mb-8">
+            <h2 class="text-xl font-semibold text-clay-800 mb-4">Date Conversion</h2>
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-clay-700 mb-2">Gregorian Date</label>
+                        <input type="date" id="gregorian-input" class="zakat-input w-full" value="2025-10-03">
+                    </div>
+                    <div class="text-center">
+                        <button id="convert-date" class="clay-button">
+                            Convert to Hijri
+                        </button>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-clay-700 mb-2">Hijri Date</label>
+                        <div class="zakat-result bg-clay-50 text-center">
+                            <div class="font-arabic text-lg mb-1" dir="rtl" id="converted-hijri">
+                                ١٥ ربيع الأول ١٤٤٦
+                            </div>
+                            <div class="text-sm text-clay-600" id="converted-hijri-en">
+                                15 Rabi' al-Awwal 1446
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        // Islamic Calendar Page Specific JavaScript
+        class IslamicCalendar {
+            constructor() {
+                this.currentHijriMonth = 3; // Rabi' al-Awwal (0-indexed)
+                this.currentHijriYear = 1446;
+                this.hijriMonths = [
+                    'Muharram', 'Safar', 'Rabi\' al-Awwal', 'Rabi\' al-Thani',
+                    'Jumada al-Awwal', 'Jumada al-Thani', 'Rajab', 'Shaban',
+                    'Ramadan', 'Shawwal', 'Dhu al-Qidah', 'Dhu al-Hijjah'
+                ];
+                
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateDateDisplay();
+                this.generateHijriCalendar();
+                this.setupDateConversion();
+            }
+
+            setupEventListeners() {
+                document.getElementById('prev-hijri-month')?.addEventListener('click', () => {
+                    this.navigateHijriMonth(-1);
+                });
+
+                document.getElementById('next-hijri-month')?.addEventListener('click', () => {
+                    this.navigateHijriMonth(1);
+                });
+
+                document.getElementById('convert-date')?.addEventListener('click', () => {
+                    this.convertGregorianToHijri();
+                });
+            }
+
+            updateDateDisplay() {
+                const today = new Date();
+                const hijriDate = this.toHijri(today);
+                
+                document.getElementById('hijri-date').textContent = 
+                    `${this.toArabicNumber(hijriDate.day)} ${hijriDate.month} ${this.toArabicNumber(hijriDate.year)}`;
+                document.getElementById('hijri-date-en').textContent = 
+                    `${hijriDate.day} ${hijriDate.month} ${hijriDate.year}`;
+                
+                document.getElementById('gregorian-date').textContent = 
+                    today.toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                document.getElementById('gregorian-date-alt').textContent = 
+                    today.toLocaleDateString('en-US', { 
+                        day: '2-digit', 
+                        month: '2-digit', 
+                        year: 'numeric' 
+                    });
+            }
+
+            generateHijriCalendar() {
+                const calendarGrid = document.getElementById('hijri-calendar-grid');
+                if (!calendarGrid) return;
+
+                calendarGrid.innerHTML = '';
+
+                // Update month display
+                const monthYear = document.getElementById('hijri-month-year');
+                const monthGregorian = document.getElementById('hijri-month-gregorian');
+                
+                if (monthYear) {
+                    monthYear.textContent = `${this.hijriMonths[this.currentHijriMonth]} ${this.currentHijriYear}`;
+                }
+                
+                if (monthGregorian) {
+                    // Mock corresponding Gregorian month
+                    monthGregorian.textContent = 'October 2025';
+                }
+
+                // Generate calendar days (simplified)
+                const daysInMonth = 30; // Simplified - most Hijri months have 29 or 30 days
+                const startDay = 0; // Sunday
+
+                // Add empty cells for days before month starts
+                for (let i = 0; i < startDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'w-8 h-8';
+                    calendarGrid.appendChild(emptyDay);
+                }
+
+                // Add days of the month
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = `w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium cursor-pointer transition-all duration-200 ${
+                        day === 15 ? 'bg-islamic-500 text-white' : 'bg-clay-100 text-clay-700 hover:bg-clay-200'
+                    }`;
+                    dayElement.textContent = this.toArabicNumber(day);
+                    
+                    dayElement.addEventListener('click', () => {
+                        this.selectDate(day);
+                    });
+                    
+                    calendarGrid.appendChild(dayElement);
+                }
+            }
+
+            navigateHijriMonth(direction) {
+                this.currentHijriMonth += direction;
+                
+                if (this.currentHijriMonth > 11) {
+                    this.currentHijriMonth = 0;
+                    this.currentHijriYear++;
+                } else if (this.currentHijriMonth < 0) {
+                    this.currentHijriMonth = 11;
+                    this.currentHijriYear--;
+                }
+                
+                this.generateHijriCalendar();
+            }
+
+            selectDate(day) {
+                // Remove previous selection
+                document.querySelectorAll('#hijri-calendar-grid > div').forEach(el => {
+                    el.classList.remove('ring-2', 'ring-islamic-500');
+                });
+                
+                // Add selection to clicked day
+                event.target.classList.add('ring-2', 'ring-islamic-500');
+                
+                this.showToast(`Selected: ${day} ${this.hijriMonths[this.currentHijriMonth]} ${this.currentHijriYear}`);
+            }
+
+            setupDateConversion() {
+                const gregorianInput = document.getElementById('gregorian-input');
+                if (gregorianInput) {
+                    gregorianInput.addEventListener('change', () => {
+                        this.convertGregorianToHijri();
+                    });
+                }
+            }
+
+            convertGregorianToHijri() {
+                const gregorianInput = document.getElementById('gregorian-input');
+                const hijriOutput = document.getElementById('converted-hijri');
+                const hijriOutputEn = document.getElementById('converted-hijri-en');
+                
+                if (gregorianInput && hijriOutput && hijriOutputEn) {
+                    const gregorianDate = new Date(gregorianInput.value);
+                    const hijriDate = this.toHijri(gregorianDate);
+                    
+                    hijriOutput.textContent = 
+                        `${this.toArabicNumber(hijriDate.day)} ${hijriDate.month} ${this.toArabicNumber(hijriDate.year)}`;
+                    hijriOutputEn.textContent = 
+                        `${hijriDate.day} ${hijriDate.month} ${hijriDate.year}`;
+                }
+            }
+
+            toHijri(gregorianDate) {
+                // Simplified Hijri conversion
+                // In a real app, you'd use a proper Hijri calendar library
+                const jd = this.gregorianToJulian(gregorianDate);
+                const hijriJd = jd - 1948439; // Approximate conversion
+                const hijriYear = Math.floor(hijriJd / 354.367) + 1;
+                const dayOfYear = hijriJd % 354.367;
+                const hijriMonth = Math.floor(dayOfYear / 29.531);
+                const hijriDay = Math.floor(dayOfYear % 29.531) + 1;
+                
+                return {
+                    day: hijriDay,
+                    month: this.hijriMonths[hijriMonth] || 'Muharram',
+                    year: hijriYear
+                };
+            }
+
+            gregorianToJulian(date) {
+                const a = Math.floor((14 - (date.getMonth() + 1)) / 12);
+                const y = date.getFullYear() - a;
+                const m = (date.getMonth() + 1) + 12 * a - 3;
+                
+                return date.getDate() + Math.floor((153 * m + 2) / 5) + 365 * y + 
+                       Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) + 1721119;
+            }
+
+            toArabicNumber(num) {
+                const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+                return num.toString().split('').map(digit => 
+                    arabicNumbers[parseInt(digit)] || digit
+                ).join('');
+            }
+
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.className = 'fixed top-4 left-4 right-4 bg-islamic-500 text-white p-3 rounded-lg shadow-lg z-50 text-center';
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 3000);
+            }
+        }
+
+        // Initialize Islamic calendar
+        document.addEventListener('DOMContentLoaded', () => {
+            new IslamicCalendar();
+        });
+    </script>
+</body>
+</html>

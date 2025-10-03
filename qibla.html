@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qibla Compass - MyIslam</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                        'arabic': ['Amiri', 'serif'],
+                    },
+                    colors: {
+                        'clay': {
+                            50: '#f8f9fa',
+                            100: '#e9ecef',
+                            200: '#dee2e6',
+                            300: '#ced4da',
+                            400: '#adb5bd',
+                            500: '#6c757d',
+                            600: '#495057',
+                            700: '#343a40',
+                            800: '#212529',
+                            900: '#1a1d20',
+                        },
+                        'islamic': {
+                            50: '#f0f9f4',
+                            100: '#dcf2e4',
+                            200: '#bbe5cc',
+                            300: '#88d1a7',
+                            400: '#52b57a',
+                            500: '#2d9d5a',
+                            600: '#227d47',
+                            700: '#1e633a',
+                            800: '#1a5030',
+                            900: '#164329',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-clay-50 to-clay-100 min-h-screen font-sans">
+    <!-- Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-clay-200 z-50 pb-safe">
+        <div class="flex justify-around items-center py-2">
+            <a href="index.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🏠</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Home</span>
+            </a>
+            <a href="prayer.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">🕌</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Prayer</span>
+            </a>
+            <a href="qibla.html" class="nav-item active flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-islamic-500 rounded-lg flex items-center justify-center">
+                    <span class="text-white text-xs">🧭</span>
+                </div>
+                <span class="text-xs font-medium text-islamic-600">Qibla</span>
+            </a>
+            <a href="quran.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">📖</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">Quran</span>
+            </a>
+            <a href="more.html" class="nav-item flex flex-col items-center p-2 rounded-lg transition-all duration-200">
+                <div class="w-6 h-6 mb-1 bg-clay-300 rounded-lg flex items-center justify-center">
+                    <span class="text-clay-600 text-xs">⋯</span>
+                </div>
+                <span class="text-xs font-medium text-clay-600">More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20 px-4 pt-6">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-clay-800 mb-2">Qibla Direction</h1>
+            <p class="text-clay-600">Find the direction to Kaaba</p>
+        </header>
+
+        <!-- Compass Section -->
+        <section class="mb-8">
+            <div class="compass-container">
+                <div class="compass-face" id="compass-face">
+                    <div class="compass-directions">
+                        <div class="direction-marker north">N</div>
+                        <div class="direction-marker east">E</div>
+                        <div class="direction-marker south">S</div>
+                        <div class="direction-marker west">W</div>
+                    </div>
+                    <div class="compass-needle" id="compass-needle"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-4 h-4 bg-clay-400 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Direction Info -->
+        <section class="mb-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200 text-center">
+                <h2 class="text-xl font-semibold text-clay-800 mb-4">Direction Information</h2>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <p class="text-clay-600 text-sm">Bearing</p>
+                        <p class="text-2xl font-bold text-islamic-600" id="bearing-display">118°</p>
+                    </div>
+                    <div>
+                        <p class="text-clay-600 text-sm">Direction</p>
+                        <p class="text-2xl font-bold text-islamic-600" id="direction-display">NE</p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <p class="text-clay-600 text-sm mb-1">Distance to Kaaba</p>
+                    <p class="text-lg font-semibold text-clay-800" id="distance-display">6,847 km</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location Status -->
+        <section class="mb-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <h2 class="text-xl font-semibold text-clay-800 mb-4">Location Status</h2>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-clay-600">GPS Status</span>
+                        <span class="flex items-center" id="gps-status">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                            <span class="text-green-600 font-semibold">Active</span>
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-clay-600">Accuracy</span>
+                        <span class="font-semibold text-clay-800" id="accuracy-display">±10m</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-clay-600">Your Location</span>
+                        <span class="font-semibold text-clay-800" id="location-display">New York, NY</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-clay-600">Coordinates</span>
+                        <span class="font-mono text-sm text-clay-800" id="coordinates-display">40.7128°N, 74.0060°W</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compass Calibration -->
+        <section class="mb-8">
+            <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-clay-200">
+                <h2 class="text-xl font-semibold text-clay-800 mb-4">Calibration</h2>
+                <p class="text-clay-600 text-sm mb-4">For best accuracy, calibrate your compass by moving your device in a figure-8 pattern.</p>
+                <div class="flex space-x-4">
+                    <button id="calibrate-btn" class="clay-button flex-1 bg-islamic-500 text-white">
+                        Calibrate Compass
+                    </button>
+                    <button id="refresh-btn" class="clay-button flex-1">
+                        Refresh Location
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instructions -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-islamic-50 to-islamic-100 rounded-2xl p-6 shadow-lg border border-islamic-200">
+                <h2 class="text-xl font-semibold text-islamic-800 mb-4">How to Use</h2>
+                <div class="space-y-3 text-islamic-700">
+                    <div class="flex items-start">
+                        <span class="text-islamic-600 font-bold mr-3">1.</span>
+                        <p class="text-sm">Hold your device flat and point it in different directions</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-islamic-600 font-bold mr-3">2.</span>
+                        <p class="text-sm">The red needle points towards the Qibla (Kaaba in Mecca)</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-islamic-600 font-bold mr-3">3.</span>
+                        <p class="text-sm">Face the direction shown by the red needle for prayer</p>
+                    </div>
+                    <div class="flex items-start">
+                        <span class="text-islamic-600 font-bold mr-3">4.</span>
+                        <p class="text-sm">Calibrate if the compass seems inaccurate</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+    <script>
+        // Qibla Compass Page Specific JavaScript
+        class QiblaCompass {
+            constructor() {
+                this.currentLocation = { lat: 40.7128, lng: -74.0060 }; // Default: NYC
+                this.deviceOrientation = 0;
+                this.magneticDeclination = 0;
+                this.qiblaBearing = 0;
+                this.isCalibrating = false;
+                
+                this.init();
+            }
+
+            init() {
+                this.setupDeviceOrientation();
+                this.setupLocationServices();
+                this.setupEventListeners();
+                this.calculateQiblaDirection();
+                this.updateCompassDisplay();
+            }
+
+            setupDeviceOrientation() {
+                if (window.DeviceOrientationEvent) {
+                    window.addEventListener('deviceorientation', (event) => {
+                        this.handleOrientationChange(event);
+                    });
+                } else {
+                    console.log('Device orientation not supported');
+                    this.showOrientationWarning();
+                }
+            }
+
+            setupLocationServices() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            this.currentLocation = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            this.updateLocationDisplay();
+                            this.calculateQiblaDirection();
+                        },
+                        (error) => {
+                            console.log('Location access denied');
+                            this.showLocationWarning();
+                        },
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 300000
+                        }
+                    );
+                } else {
+                    console.log('Geolocation not supported');
+                    this.showLocationWarning();
+                }
+            }
+
+            setupEventListeners() {
+                const calibrateBtn = document.getElementById('calibrate-btn');
+                const refreshBtn = document.getElementById('refresh-btn');
+
+                if (calibrateBtn) {
+                    calibrateBtn.addEventListener('click', () => {
+                        this.calibrateCompass();
+                    });
+                }
+
+                if (refreshBtn) {
+                    refreshBtn.addEventListener('click', () => {
+                        this.refreshLocation();
+                    });
+                }
+            }
+
+            handleOrientationChange(event) {
+                // Get compass heading (0-360 degrees)
+                let heading = event.alpha;
+                
+                if (heading !== null) {
+                    // Normalize heading
+                    heading = heading < 0 ? heading + 360 : heading;
+                    
+                    // Apply magnetic declination correction
+                    heading += this.magneticDeclination;
+                    
+                    this.deviceOrientation = heading;
+                    this.updateCompassDisplay();
+                }
+            }
+
+            calculateQiblaDirection() {
+                const R = (d) => d * Math.PI / 180;
+                const D = (r) => r * 180 / Math.PI;
+                
+                const Kφ = R(21.4225); // Kaaba latitude
+                const Kλ = R(39.8262); // Kaaba longitude
+                const φ1 = R(this.currentLocation.lat);
+                const λ1 = R(this.currentLocation.lng);
+                
+                const y = Math.sin(Kλ - λ1) * Math.cos(Kφ);
+                const x = Math.cos(φ1) * Math.sin(Kφ) - Math.sin(φ1) * Math.cos(Kφ) * Math.cos(Kλ - λ1);
+                
+                this.qiblaBearing = (D(Math.atan2(y, x)) + 360) % 360;
+                
+                this.updateDirectionDisplay();
+                this.calculateDistance();
+            }
+
+            calculateDistance() {
+                const R = 6371; // Earth's radius in km
+                const φ1 = this.currentLocation.lat * Math.PI / 180;
+                const φ2 = 21.4225 * Math.PI / 180;
+                const Δφ = (21.4225 - this.currentLocation.lat) * Math.PI / 180;
+                const Δλ = (39.8262 - this.currentLocation.lng) * Math.PI / 180;
+
+                const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                          Math.cos(φ1) * Math.cos(φ2) *
+                          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                const distance = R * c;
+
+                const distanceElement = document.getElementById('distance-display');
+                if (distanceElement) {
+                    distanceElement.textContent = `${Math.round(distance).toLocaleString()} km`;
+                }
+            }
+
+            updateCompassDisplay() {
+                const needle = document.getElementById('compass-needle');
+                if (needle) {
+                    // Calculate the angle the needle should point
+                    const needleAngle = this.qiblaBearing - this.deviceOrientation;
+                    needle.style.transform = `rotate(${needleAngle}deg)`;
+                }
+            }
+
+            updateDirectionDisplay() {
+                const bearingElement = document.getElementById('bearing-display');
+                const directionElement = document.getElementById('direction-display');
+
+                if (bearingElement) {
+                    bearingElement.textContent = `${Math.round(this.qiblaBearing)}°`;
+                }
+
+                if (directionElement) {
+                    directionElement.textContent = this.getCardinalDirection(this.qiblaBearing);
+                }
+            }
+
+            updateLocationDisplay() {
+                const locationElement = document.getElementById('location-display');
+                const coordinatesElement = document.getElementById('coordinates-display');
+
+                if (locationElement) {
+                    // In a real app, you'd reverse geocode the coordinates
+                    locationElement.textContent = 'Your Location';
+                }
+
+                if (coordinatesElement) {
+                    const lat = this.currentLocation.lat.toFixed(4);
+                    const lng = this.currentLocation.lng.toFixed(4);
+                    const latDir = lat >= 0 ? 'N' : 'S';
+                    const lngDir = lng >= 0 ? 'E' : 'W';
+                    coordinatesElement.textContent = `${Math.abs(lat)}°${latDir}, ${Math.abs(lng)}°${lngDir}`;
+                }
+            }
+
+            getCardinalDirection(degrees) {
+                const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+                const index = Math.round(degrees / 22.5) % 16;
+                return directions[index];
+            }
+
+            calibrateCompass() {
+                this.isCalibrating = true;
+                const calibrateBtn = document.getElementById('calibrate-btn');
+                
+                if (calibrateBtn) {
+                    calibrateBtn.textContent = 'Calibrating...';
+                    calibrateBtn.disabled = true;
+                }
+
+                // Simulate calibration process
+                setTimeout(() => {
+                    this.isCalibrating = false;
+                    if (calibrateBtn) {
+                        calibrateBtn.textContent = 'Calibrate Compass';
+                        calibrateBtn.disabled = false;
+                    }
+                    
+                    // Show success message
+                    this.showCalibrationSuccess();
+                }, 3000);
+            }
+
+            refreshLocation() {
+                const refreshBtn = document.getElementById('refresh-btn');
+                
+                if (refreshBtn) {
+                    refreshBtn.textContent = 'Refreshing...';
+                    refreshBtn.disabled = true;
+                }
+
+                this.setupLocationServices();
+
+                setTimeout(() => {
+                    if (refreshBtn) {
+                        refreshBtn.textContent = 'Refresh Location';
+                        refreshBtn.disabled = false;
+                    }
+                }, 2000);
+            }
+
+            showCalibrationSuccess() {
+                // Create and show success message
+                const message = document.createElement('div');
+                message.className = 'fixed top-4 left-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50';
+                message.textContent = 'Compass calibrated successfully!';
+                document.body.appendChild(message);
+
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 3000);
+            }
+
+            showOrientationWarning() {
+                const gpsStatus = document.getElementById('gps-status');
+                if (gpsStatus) {
+                    gpsStatus.innerHTML = `
+                        <div class="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                        <span class="text-red-600 font-semibold">Not Supported</span>
+                    `;
+                }
+            }
+
+            showLocationWarning() {
+                const gpsStatus = document.getElementById('gps-status');
+                if (gpsStatus) {
+                    gpsStatus.innerHTML = `
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                        <span class="text-yellow-600 font-semibold">Limited</span>
+                    `;
+                }
+            }
+        }
+
+        // Initialize Qibla compass
+        document.addEventListener('DOMContentLoaded', () => {
+            new QiblaCompass();
+        });
+    </script>
+</body>
+</html>
